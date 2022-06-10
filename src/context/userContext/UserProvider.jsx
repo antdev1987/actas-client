@@ -55,6 +55,7 @@ export const UserProvider= props=>{
         value={{
             user,
 
+            setUser,
             loginUserfn,
             logoutUserfn
         }}

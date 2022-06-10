@@ -7,7 +7,7 @@ import {
 
 
 import { UserProvider } from "./context/userContext/UserProvider";
-
+import { AppProvider } from "./context/actasContext/AppProvider";
 
 import Login from "./pages/Login";
 import NavBar from "./layout/NavBar";
@@ -18,6 +18,10 @@ import PlanMantenimiento from "./pages/PlanMantenimiento";
 
 import PublicRouteApp from "./pages/permisos/PublicRouteApp";
 import PrivateRouteUser from "./pages/permisos/PrivateRouteUser";
+import PrivateRouteAdmin from "./pages/permisos/PrivateRouteAdmin";
+
+import AdminUsers from "./pages/AdminUsers";
+
 
 function App() {
 
@@ -26,6 +30,7 @@ function App() {
 
     <BrowserRouter>
     <UserProvider>
+      <AppProvider>
       <NavBar/>
       <Routes>
 
@@ -43,9 +48,14 @@ function App() {
       </Route>
 
 
+      <Route element={<PrivateRouteAdmin />}>
+              <Route path='/admin/admin-users' element={<AdminUsers />}/>
+              {/* <Route path='/admin/mantencion' element={<Mantencion  />}/> */}
+      </Route>
 
       </Routes>
 
+      </AppProvider>
     </UserProvider>
     </BrowserRouter>
 
