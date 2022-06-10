@@ -43,13 +43,20 @@ export const UserProvider= props=>{
         }
     }
 
+    const logoutUserfn =()=>{
+        localStorage.clear()
+        setUser('')
+        navigate('/')
+    }
+
 
     return (
         <UserContext.Provider
         value={{
             user,
 
-            loginUserfn
+            loginUserfn,
+            logoutUserfn
         }}
         >
             {props.children}
