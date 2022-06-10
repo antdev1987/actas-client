@@ -5,12 +5,12 @@ import { AppReducer, InitialState } from './AppReducer'
 
 import { useAuth } from '../userContext/UserProvider'
 
-const AppContext = createContext()
+const AppContext = createContext({crearFolderUsuariofn: () => {}})
 
 export const AppProvider = props =>{
 
     const [state,dispatch] =useReducer(AppReducer,InitialState)
-    const {user,SetUser} = useAuth()
+    const {user,setUser} = useAuth()
 
     /////////////////// funciones para trabajar en el reducer ////////
 
@@ -81,7 +81,56 @@ export const AppProvider = props =>{
         }
     }
 
+    const crearFolderUsuariofn=async(setUserFolder,inputUsuario)=>{
 
+        console.log(inputUsuario)
+
+        const token = JSON.parse(localStorage.getItem('uid'))
+        if(!token){
+            setUser('')
+            return
+        }
+        const config = {
+            headers:{
+                Authorization:`Bearer ${token.token}`
+            }
+        }
+        try {
+            const endPoint = `${import.meta.env.VITE_BASE_URL}/actas/crear-folder`
+            const {data} = await axios.post(endPoint,inputUsuario,config)
+            setUserFolder(data)
+            console.log(data,'funtion crearfolderfn')
+        } catch (error) {
+            console.log(error.response.data.msg)
+        }
+
+    }
+
+
+    const buscarFolderUsuariofn=async(setUserFolder,inputUsuario)=>{
+
+        console.log(inputUsuario)
+
+        const token = JSON.parse(localStorage.getItem('uid'))
+        if(!token){
+            setUser('')
+            return
+        }
+        const config = {
+            headers:{
+                Authorization:`Bearer ${token.token}`
+            }
+        }
+        try {
+            const endPoint = `${import.meta.env.VITE_BASE_URL}/actas/buscar-folder`
+            const {data} = await axios.post(endPoint,inputUsuario,config)
+            setUserFolder(data)
+            console.log(data,'funtion buscarfolderfn')
+        } catch (error) {
+            console.log(error.response.data.msg)
+        }
+
+    }
 
     return(
         <AppContext.Provider
@@ -92,7 +141,9 @@ export const AppProvider = props =>{
                 setUserBd,
 
                 createNewUserAppfn,
-                deleteNewUserAppfn
+                deleteNewUserAppfn,
+                buscarFolderUsuariofn,
+                crearFolderUsuariofn
 
             }}
         >

@@ -56,7 +56,7 @@ const AddUserForm = () => {
               className="form-control"
               id="userName"
               name="email"
-              placeholder="user Name"
+              placeholder="Email"
               value={inputs.email}
               onChange={(e) =>
                 setInputs({ ...inputs, [e.target.name]: e.target.value })
