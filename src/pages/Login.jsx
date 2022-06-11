@@ -13,6 +13,9 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(import.meta.env.VITE_BASE_URL,'funcionando')
+
     loginUserfn(inputs, setError);
   };
 
