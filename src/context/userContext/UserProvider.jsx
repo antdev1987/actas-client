@@ -20,7 +20,7 @@ export const UserProvider= props=>{
 
         try {
 
-            const endPoint = `${import.meta.env.VITE_BASE_URL}/user/login`
+            const endPoint = `https://actas-server.herokuapp.com/api/user/login`
 
             const {data}= await axios.post(endPoint,userData)
             // Swal.fire({
