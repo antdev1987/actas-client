@@ -8,7 +8,7 @@ const initialValues = {
 
 const Login = () => {
   const [inputs, setInputs] = useState(initialValues);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
   const { loginUserfn } = useAuth();
 
   const handleSubmit = (e) => {
@@ -24,12 +24,13 @@ const Login = () => {
   };
 
   return (
-    <section className="m-auto pt-3" style={{maxWidth:'800px'}}>
+    <section className="m-auto pt-3" style={{ maxWidth: "800px" }}>
+      {error && (
+        <h4 className="text-center bg-danger text-white py-3 rounded">
+          {error}
+        </h4>
+      )}
 
-      <h2 className="text-center bg-danger text-white py-5 rounded">
-        {error}
-      </h2>
-      
       <form className="w-50 m-auto mt-5 p-3 shadow" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="userName" className="form-label">
