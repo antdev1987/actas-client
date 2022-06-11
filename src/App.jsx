@@ -5,6 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 
+import { ToastProvider } from "react-toast-notifications";
 
 import { UserProvider } from "./context/userContext/UserProvider";
 import { AppProvider } from "./context/actasContext/AppProvider";
@@ -27,11 +28,11 @@ function App() {
 
   return (
    
-
     <BrowserRouter>
     <UserProvider>
       <AppProvider>
       <NavBar/>
+      <ToastProvider>
       <Routes>
 
 
@@ -54,10 +55,11 @@ function App() {
       </Route>
 
       </Routes>
-
+      </ToastProvider>
       </AppProvider>
     </UserProvider>
     </BrowserRouter>
+
 
   )
 }

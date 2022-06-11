@@ -8,11 +8,12 @@ const initialValues = {
 
 const Login = () => {
   const [inputs, setInputs] = useState(initialValues);
+  const [error, setError] = useState("")
   const { loginUserfn } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loginUserfn(inputs);
+    loginUserfn(inputs, setError);
   };
 
   const handleInputs = (e) => {
@@ -24,6 +25,11 @@ const Login = () => {
 
   return (
     <section className="m-auto pt-3" style={{maxWidth:'800px'}}>
+
+      <h2 className="text-center bg-danger text-white py-5 rounded">
+        {error}
+      </h2>
+      
       <form className="w-50 m-auto mt-5 p-3 shadow" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="userName" className="form-label">

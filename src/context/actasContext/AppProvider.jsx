@@ -5,7 +5,7 @@ import { AppReducer, InitialState } from './AppReducer'
 
 import { useAuth } from '../userContext/UserProvider'
 
-const AppContext = createContext({crearFolderUsuariofn: () => {}})
+const AppContext = createContext({crearFolderUsuariofn: () => {}, guardarFolderUsuariofn: () => {}})
 
 export const AppProvider = props =>{
 
@@ -107,6 +107,30 @@ export const AppProvider = props =>{
     }
 
 
+    const guardarFolderUsuariofn=async(setData, id)=>{
+
+        const token = JSON.parse(localStorage.getItem('uid'))
+        if(!token){
+            setUser('')
+            return
+        }
+        const config = {
+            headers:{
+                Authorization:`Bearer ${token.token}`
+            }
+        }
+        try {
+            const endPoint = `${import.meta.env.VITE_BASE_URL}/actas/guardar-archivos/${id}`
+            const {data} = await axios.post(endPoint,setData,config)
+
+            console.log(data,'funtion asdfafsdafds')
+        } catch (error) {
+            console.log(error.response.data.msg)
+        }
+
+    }
+
+
     const buscarFolderUsuariofn=async(setUserFolder,inputUsuario)=>{
 
         console.log(inputUsuario)
@@ -143,7 +167,8 @@ export const AppProvider = props =>{
                 createNewUserAppfn,
                 deleteNewUserAppfn,
                 buscarFolderUsuariofn,
-                crearFolderUsuariofn
+                crearFolderUsuariofn,
+                guardarFolderUsuariofn
 
             }}
         >

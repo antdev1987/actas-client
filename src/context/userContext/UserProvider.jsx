@@ -15,7 +15,7 @@ export const UserProvider= props=>{
 
 
 
-    const loginUserfn =async(userData)=>{
+    const loginUserfn =async(userData, setError)=>{
 
 
         try {
@@ -40,6 +40,7 @@ export const UserProvider= props=>{
             //     text: error.response.data.msg,
             //   })
             console.log(error.response.data.msg)
+            setError(error.response.data.msg)
         }
     }
 
