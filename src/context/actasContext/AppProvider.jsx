@@ -120,6 +120,7 @@ export const AppProvider = props =>{
             }
         }
         try {
+            
             const endPoint = `http://192.168.100.7:4000/api/actas/guardar-archivos/${id}`
             const {data} = await axios.post(endPoint,setData,config)
 
