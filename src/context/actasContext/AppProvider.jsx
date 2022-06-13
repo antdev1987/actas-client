@@ -46,7 +46,7 @@ export const AppProvider = props =>{
 
         try {
 
-            const endPoint = `http://192.168.100.7:4000/api/user/crear-usuario`
+            const endPoint = `https://actas-server.herokuapp.com/api/user/crear-usuario`
             const {data} = await axios.post(endPoint,userData,config)
 
             console.log(data)
@@ -71,7 +71,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `http://192.168.100.7:4000/api/user/eliminar-usuario/${id}`
+            const endPoint = `https://actas-server.herokuapp.com/api/user/eliminar-usuario/${id}`
             const {data} = await axios.delete(endPoint,config)
             updatingLocaluserBd(id)
             console.log(data)
@@ -96,7 +96,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `http://192.168.100.7:4000/api/actas/crear-folder`
+            const endPoint = `https://actas-server.herokuapp.com/api/actas/crear-folder`
             const {data} = await axios.post(endPoint,inputUsuario,config)
             setUserFolder(data)
             console.log(data,'funtion crearfolderfn')
@@ -120,7 +120,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `http://192.168.100.7:4000/api/actas/guardar-archivos/${id}`
+            const endPoint = `https://actas-server.herokuapp.com/api/actas/guardar-archivos/${id}`
             const {data} = await axios.post(endPoint,setData,config)
 
             console.log(data,'funtion asdfafsdafds')
@@ -147,7 +147,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `http://192.168.100.7:4000/api/actas/buscar-folder`
+            const endPoint = `https://actas-server.herokuapp.com/api/actas/buscar-folder`
             const {data} = await axios.post(endPoint,inputUsuario,config)
             setUserFolder(data)
             console.log(data,'funtion buscarfolderfn')
