@@ -131,9 +131,10 @@ export const AppProvider = props =>{
     }
 
 
-    const buscarFolderUsuariofn=async(setUserFolder,inputUsuario, saveSelector)=>{
+    const buscarFolderUsuariofn=async(setUserFolder,inputUsuario)=>{
 
         console.log(inputUsuario)
+
 
         const token = JSON.parse(localStorage.getItem('uid'))
         if(!token){
@@ -147,7 +148,7 @@ export const AppProvider = props =>{
         }
         try {
             const endPoint = `http://192.168.100.7:4000/api/actas/buscar-folder`
-            const {data} = await axios.post(endPoint,inputUsuario,saveSelector,config)
+            const {data} = await axios.post(endPoint,inputUsuario,config)
             setUserFolder(data)
             console.log(data,'funtion buscarfolderfn')
         } catch (error) {

@@ -17,9 +17,6 @@ const RegistroActas = () => {
   // files input
   const [saveFile, setSaveFile] = useState();
 
-  // Select input
-  const [saveSelect, setSaveSelect] = useState({ Selector: 'entrega' });
-
   const {
     buscarFolderUsuariofn,
     crearFolderUsuariofn,
@@ -30,7 +27,10 @@ const RegistroActas = () => {
   const [userFolder, setUserFolder] = useState({});
 
   //este obtiene el valor del input para buscar o crear usuario (onchange)
-  const [inputUsuario, setInputUsuario] = useState('');
+  const [inputUsuario, setInputUsuario] = useState({
+    nombre: '',
+    selector: 'Entrega',
+  });
 
   // Validacion
   useEffect(() => {
@@ -55,7 +55,7 @@ const RegistroActas = () => {
   const handleBuscar = async (e) => {
     e.preventDefault();
 
-    if (inputUsuario === '' || inputUsuario.nombre === '') {
+    if (inputUsuario.nombre === '') {
       addToast('Esta vacio', { appearance: 'error', autoDismiss: true });
 
       setMostrar({ ...mostrar, grupo1: false, usuario: null });
@@ -69,7 +69,7 @@ const RegistroActas = () => {
       return;
     }
 
-    buscarFolderUsuariofn(setUserFolder, inputUsuario, saveSelect.selector);
+    buscarFolderUsuariofn(setUserFolder, inputUsuario);
   };
 
   //Boton Crear
@@ -105,11 +105,6 @@ const RegistroActas = () => {
     setMostrar({ ...mostrar, guardar: true });
   };
 
-  // input select
-  const handleSelect = (e) => {
-    setSaveSelect({ Selector: e.target.value });
-  };
-
   // Enviar la informacion
   const handleGuardar = async (e) => {
     e.preventDefault();
@@ -122,7 +117,7 @@ const RegistroActas = () => {
       data.append(`myFiles`, saveFile[x]);
     }
 
-    data.append('selector', saveSelect.selector);
+    data.append('selector', inputUsuario.selector);
 
     addToast('Enviado', { appearance: 'success', autoDismiss: true });
     inputRef.current.value = null;
@@ -146,10 +141,18 @@ const RegistroActas = () => {
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Tipo de acta</Form.Label>
-          <Form.Select onChange={handleSelect}>
-            <option value="entrega">Entrega</option>
-            <option value="devolucion">Devolucion</option>
-            <option value="calendario">Calendario</option>
+          <Form.Select
+            name='selector'
+            onChange={(e) =>
+              setInputUsuario({
+                ...inputUsuario,
+                [e.target.name]: e.target.value,
+              })
+            }
+          >
+            <option value="Entrega">Entrega</option>
+            <option value="Devolucion">Devolucion</option>
+            <option value="Calendario">Calendario</option>
           </Form.Select>
           <hr />
         </Form.Group>
@@ -157,7 +160,13 @@ const RegistroActas = () => {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Nombre del usuario: </Form.Label>
           <Form.Control
-            onChange={(e) => setInputUsuario({ nombre: e.target.value })}
+            onChange={(e) =>
+              setInputUsuario({
+                ...inputUsuario,
+                [e.target.name]: e.target.value,
+              })
+            }
+            name="nombre"
             type="text"
             placeholder="Ingrese nombre"
           />
@@ -189,6 +198,7 @@ const RegistroActas = () => {
                 type="file"
                 multiple
                 onChange={handleFiles}
+                accept=".doc,.DOCX,.xlsx,.pdf"
               />
 
               <hr />
