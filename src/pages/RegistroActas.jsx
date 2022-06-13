@@ -18,7 +18,7 @@ const RegistroActas = () => {
   const [saveFile, setSaveFile] = useState();
 
   // Select input
-  const [saveSelect, setSaveSelect] = useState({ selector: 'entrega' });
+  const [saveSelect, setSaveSelect] = useState({ Selector: 'entrega' });
 
   const {
     buscarFolderUsuariofn,
@@ -69,7 +69,7 @@ const RegistroActas = () => {
       return;
     }
 
-    buscarFolderUsuariofn(setUserFolder, inputUsuario);
+    buscarFolderUsuariofn(setUserFolder, inputUsuario, saveSelect.selector);
   };
 
   //Boton Crear
@@ -107,7 +107,7 @@ const RegistroActas = () => {
 
   // input select
   const handleSelect = (e) => {
-    setSaveSelect({ selector: e.target.value });
+    setSaveSelect({ Selector: e.target.value });
   };
 
   // Enviar la informacion
@@ -144,6 +144,16 @@ const RegistroActas = () => {
       <Form style={{ width: '100%' }} onSubmit={(e) => e.preventDefault()}>
         <h2 className="text-center">Registros de Actas</h2>
 
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Tipo de acta</Form.Label>
+          <Form.Select onChange={handleSelect}>
+            <option value="entrega">Entrega</option>
+            <option value="devolucion">Devolucion</option>
+            <option value="calendario">Calendario</option>
+          </Form.Select>
+          <hr />
+        </Form.Group>
+
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Nombre del usuario: </Form.Label>
           <Form.Control
@@ -172,16 +182,6 @@ const RegistroActas = () => {
 
         {mostrar.grupo1 && (
           <>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Tipo de acta</Form.Label>
-              <Form.Select onChange={handleSelect}>
-                <option value="entrega">Entrega</option>
-                <option value="devolucion">Devolucion</option>
-                <option value="calendario">Calendario</option>
-              </Form.Select>
-              <hr />
-            </Form.Group>
-
             <Form.Group className="mb-3">
               <Form.Label>Browser</Form.Label>
               <Form.Control

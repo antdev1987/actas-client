@@ -17,10 +17,10 @@ export const UserProvider= props=>{
 
     const loginUserfn =async(userData, setError)=>{
 
-
+        // https://actas-server.herokuapp.com/api/user/login
         try {
 
-            const endPoint = `https://actas-server.herokuapp.com/api/user/login`
+            const endPoint = `http://192.168.100.7:4000/api/user/login`
 
             const {data}= await axios.post(endPoint,userData)
             // Swal.fire({
