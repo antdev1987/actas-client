@@ -31,6 +31,9 @@ export const AppProvider = props =>{
 
     /////// funciones generales ////////
 
+    const dynamicurlLocal = 'http://192.168.100.7:4000'
+    //https://actas-server.herokuapp.com
+
     const createNewUserAppfn = async(userData)=>{
 
         const token = JSON.parse(localStorage.getItem('uid'))
@@ -46,7 +49,7 @@ export const AppProvider = props =>{
 
         try {
 
-            const endPoint = `https://actas-server.herokuapp.com/api/user/crear-usuario`
+            const endPoint = `${dynamicurlLocal}api/user/crear-usuario`
             const {data} = await axios.post(endPoint,userData,config)
 
             console.log(data)
@@ -71,7 +74,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `https://actas-server.herokuapp.com/api/user/eliminar-usuario/${id}`
+            const endPoint = `${dynamicurlLocal}api/user/eliminar-usuario/${id}`
             const {data} = await axios.delete(endPoint,config)
             updatingLocaluserBd(id)
             console.log(data)
@@ -96,7 +99,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `https://actas-server.herokuapp.com/api/actas/crear-folder`
+            const endPoint = `${dynamicurlLocal}api/actas/crear-folder`
             const {data} = await axios.post(endPoint,inputUsuario,config)
             setUserFolder(data)
             console.log(data,'funtion crearfolderfn')
@@ -120,7 +123,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `https://actas-server.herokuapp.com/api/actas/guardar-archivos/${id}`
+            const endPoint = `${dynamicurlLocal}api/actas/guardar-archivos/${id}`
             const {data} = await axios.post(endPoint,setData,config)
 
             console.log(data,'funtion asdfafsdafds')
@@ -147,7 +150,7 @@ export const AppProvider = props =>{
             }
         }
         try {
-            const endPoint = `https://actas-server.herokuapp.com/api/actas/buscar-folder`
+            const endPoint = `${dynamicurlLocal}api/actas/buscar-folder`
             const {data} = await axios.post(endPoint,inputUsuario,config)
             setUserFolder(data)
             console.log(data,'funtion buscarfolderfn')
