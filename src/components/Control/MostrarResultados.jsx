@@ -28,7 +28,7 @@ export const MostrarResultados = () => {
     //   e._id = _id;
     //   e.tipo = tipo;
     // });
-
++
     handleMostrar(tof);
     setVisualizar(false);
     setSaveFiles(idx);
@@ -41,7 +41,13 @@ export const MostrarResultados = () => {
   const eliminar = (item, item2) => {
     console.log(item);
     console.log(item2);
-    // eliminarFilefn(item);
+
+    const infoNeeded = {
+      public_id: item.public_id,
+      _id: item2._id,
+      tipo: item2.tipo
+    }
+    eliminarFilefn(infoNeeded);
   };
 
   return (
