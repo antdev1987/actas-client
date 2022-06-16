@@ -226,17 +226,30 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const testFiltrado2 = state.resultados.find(item => item._id === info._id)
+      const testFiltrado2 = state.resultados.map((item) => {
+        if (item._id === info._id) {
+          return {
+            ...item,
+            files: item.files.filter(
+              (e) => e.public_id !== info.public_id
+            ),
+          };
+        } else {
+          return item
+        }
+      });
       // const testFiltrado = state.resultados.filter(item => item.files.public_id !== info.public_id)
-      const testFiltrado = testFiltrado2.files.filter(item => item.public_id !== info.public_id)
-      console.log(testFiltrado);
-      eliminarResultados(testFiltrado)
-      return
+      // const testFiltrado = testFiltrado2.files.filter(
+      //   (item) => item.public_id !== info.public_id
+      // );
+      console.log(testFiltrado2);
+      eliminarResultados(testFiltrado2);
+      return;
       const endPoint = `${dynamicurlLocal}api/actas/eliminar-un-archivo`;
       const { msg } = await axios.delete(endPoint, config);
       setBaseDatosActas({ status: 'recargar' });
       console.log(msg, 'funtion buscarfolderfn');
-      eliminarResultados(info._id)
+      eliminarResultados(info._id);
     } catch (error) {
       console.log(error.response.data.msg);
     }

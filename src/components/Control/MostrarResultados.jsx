@@ -21,6 +21,8 @@ export const MostrarResultados = () => {
 
   const [saveFiles, setSaveFiles] = useState();
 
+  console.log(mostrar);
+
   const cambiarPerspectiva = (idx, tof) => {
     // const { files, _id, tipo } = info;
 
@@ -28,7 +30,6 @@ export const MostrarResultados = () => {
     //   e._id = _id;
     //   e.tipo = tipo;
     // });
-+
     handleMostrar(tof);
     setVisualizar(false);
     setSaveFiles(idx);
@@ -45,14 +46,14 @@ export const MostrarResultados = () => {
     const infoNeeded = {
       public_id: item.public_id,
       _id: item2._id,
-      tipo: item2.tipo
-    }
+      tipo: item2.tipo,
+    };
     eliminarFilefn(infoNeeded);
   };
 
   return (
     <Row className="mt-2">
-      {resultados.length !== 0 && mostrar === true && (
+      {resultados?.length !== 0 && mostrar === true && (
         <>
           {resultados.map((item, idx) => (
             <Col md={3} key={item._id}>

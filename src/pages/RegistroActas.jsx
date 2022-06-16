@@ -4,6 +4,17 @@ import { useToasts } from 'react-toast-notifications';
 import { useAppProvider } from '../context/actasContext/AppProvider';
 
 const RegistroActas = () => {
+  const {
+    buscarFolderUsuariofn,
+    crearFolderUsuariofn,
+    guardarFolderUsuariofn,
+    handleMostrar
+  } = useAppProvider();
+  
+  useEffect(() => {
+    handleMostrar([])
+  }, []);
+
   const inputRef = useRef();
 
   const { addToast } = useToasts();
@@ -16,12 +27,6 @@ const RegistroActas = () => {
 
   // files input
   const [saveFile, setSaveFile] = useState();
-
-  const {
-    buscarFolderUsuariofn,
-    crearFolderUsuariofn,
-    guardarFolderUsuariofn,
-  } = useAppProvider();
 
   //este obtiene el usuario buscado o creado
   const [userFolder, setUserFolder] = useState({});
