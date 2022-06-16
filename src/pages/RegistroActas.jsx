@@ -60,13 +60,6 @@ const RegistroActas = () => {
 
       setMostrar({ ...mostrar, grupo1: false, usuario: null });
       return;
-    } else if (inputUsuario.nombre.includes(' ')) {
-      addToast('No se Aceptan espacios', {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-
-      return;
     }
 
     buscarFolderUsuariofn(setUserFolder, inputUsuario);
@@ -76,17 +69,10 @@ const RegistroActas = () => {
   const handlecrear = (e) => {
     e.preventDefault();
 
-    if (inputUsuario === '' || inputUsuario.nombre === '') {
+    if (inputUsuario.nombre === '') {
       addToast('Esta vacio', { appearance: 'error', autoDismiss: true });
 
-      setMostrar({ ...mostrar, grupo1: false });
-      return;
-    } else if (inputUsuario.nombre.includes(' ')) {
-      addToast('No se Aceptan espacios', {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-
+      setMostrar({ ...mostrar, grupo1: false, usuario: null });
       return;
     }
 
@@ -134,6 +120,7 @@ const RegistroActas = () => {
         height: 'calc(100vh - 60px)',
         display: 'flex',
         alignItems: 'center',
+        maxHeight: '9999999999px',
       }}
     >
       <Form style={{ width: '100%' }} onSubmit={(e) => e.preventDefault()}>
@@ -142,7 +129,7 @@ const RegistroActas = () => {
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Tipo de acta</Form.Label>
           <Form.Select
-            name='selector'
+            name="selector"
             onChange={(e) =>
               setInputUsuario({
                 ...inputUsuario,
