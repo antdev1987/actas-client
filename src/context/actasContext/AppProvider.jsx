@@ -244,12 +244,10 @@ export const AppProvider = (props) => {
       // );
       console.log(testFiltrado2);
       eliminarResultados(testFiltrado2);
-      return;
       const endPoint = `${dynamicurlLocal}api/actas/eliminar-un-archivo`;
       const { msg } = await axios.delete(endPoint, config);
       setBaseDatosActas({ status: 'recargar' });
       console.log(msg, 'funtion buscarfolderfn');
-      eliminarResultados(info._id);
     } catch (error) {
       console.log(error.response.data.msg);
     }

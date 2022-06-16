@@ -90,7 +90,7 @@ export const MostrarResultados = () => {
                   <Card.Body>
                     <Card.Title className="d-flex align-items-center justify-content-between">
                       {item.originalname}{' '}
-                      <DropdownButton id="bg-nested-dropdown">
+                      <DropdownButton id="bg-nested-dropdown" title="">
                         <Dropdown.Item
                           eventKey="1"
                           onClick={() => eliminar(item, resultados[saveFiles])}
