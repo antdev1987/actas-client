@@ -32,7 +32,7 @@ export const AppProvider = (props) => {
   useEffect(() => {
     baseDeDatosActas();
     console.log('test');
-  }, [state.baseDatosActas?.status]);
+  }, [state.baseDatosActas?.status, state.baseDatosActas?.length]);
 
   /////////////////// funciones para trabajar en el reducer ////////
 
@@ -66,6 +66,11 @@ export const AppProvider = (props) => {
   };
   /////// funciones generales ////////
 
+  const recargarBaseDeDatos = () => {
+    setBaseDatosActas({ status: 'recargar' });
+    return 'recargado';
+  };
+
   const dynamicurlLocal = 'http://192.168.100.7:4000/';
   //https://actas-server.herokuapp.com
 
@@ -88,6 +93,36 @@ export const AppProvider = (props) => {
 
       console.log(data, 'base de datos');
       setBaseDatosActas(data);
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+  };
+
+  const filtrarbaseDeDatosActas = async (selector, nombre) => {
+    console.log(selector, nombre);
+
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUserBd('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+    };
+
+    try {
+      const endPoint = `${dynamicurlLocal}api/actas/obtener-bds`;
+
+      const { data } = await axios.get(endPoint, config);
+
+      const filtrado = data[selector].filter((item) =>
+        item.nombre.toLowerCase().includes(nombre.toLowerCase())
+      );
+
+      guardarResultados(filtrado);
+      console.log(filtrado, 'base de datos');
     } catch (error) {
       console.log(error.response.data.msg);
     }
@@ -155,8 +190,8 @@ export const AppProvider = (props) => {
     try {
       const endPoint = `${dynamicurlLocal}api/actas/crear-folder`;
       const { data } = await axios.post(endPoint, inputUsuario, config);
+      recargarBaseDeDatos();
       setUserFolder(data);
-      setBaseDatosActas({ status: 'recargar' });
       console.log(data, 'funtion crearfolderfn');
     } catch (error) {
       console.log(error.response.data.msg);
@@ -177,7 +212,7 @@ export const AppProvider = (props) => {
     try {
       const endPoint = `${dynamicurlLocal}api/actas/guardar-archivos/${id}`;
       const { data } = await axios.post(endPoint, setData, config);
-      setBaseDatosActas({ status: 'recargar' });
+      recargarBaseDeDatos();
       console.log(data, 'funtion asdfafsdafds');
     } catch (error) {
       console.log(error.response.data.msg);
@@ -200,6 +235,7 @@ export const AppProvider = (props) => {
     try {
       const endPoint = `${dynamicurlLocal}api/actas/buscar-folder`;
       const { data } = await axios.post(endPoint, inputUsuario, config);
+      recargarBaseDeDatos();
       setUserFolder(data);
       console.log(data, 'funtion buscarfolderfn');
     } catch (error) {
@@ -230,24 +266,51 @@ export const AppProvider = (props) => {
         if (item._id === info._id) {
           return {
             ...item,
-            files: item.files.filter(
-              (e) => e.public_id !== info.public_id
-            ),
+            files: item.files.filter((e) => e.public_id !== info.public_id),
           };
         } else {
-          return item
+          return item;
         }
       });
-      // const testFiltrado = state.resultados.filter(item => item.files.public_id !== info.public_id)
-      // const testFiltrado = testFiltrado2.files.filter(
-      //   (item) => item.public_id !== info.public_id
-      // );
       console.log(testFiltrado2);
       eliminarResultados(testFiltrado2);
       const endPoint = `${dynamicurlLocal}api/actas/eliminar-un-archivo`;
       const { msg } = await axios.delete(endPoint, config);
-      setBaseDatosActas({ status: 'recargar' });
+      recargarBaseDeDatos();
       console.log(msg, 'funtion buscarfolderfn');
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+  };
+
+  const eliminarFolderfn = async (info) => {
+    console.log(info);
+
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+      params: {
+        id: info._id,
+        selector: info.tipo,
+      },
+    };
+    try {
+      const endPoint = `${dynamicurlLocal}api/actas/eliminar-folder`;
+
+      const { data } = await axios.delete(endPoint, config);
+
+      const testFiltrado2 = state.resultados.filter((item) => item._id !== info._id );
+      console.log(testFiltrado2);
+
+      eliminarResultados(testFiltrado2);
+
+      console.log(data, 'funtion buscarfolderfn');
     } catch (error) {
       console.log(error.response.data.msg);
     }
@@ -273,6 +336,9 @@ export const AppProvider = (props) => {
         visualizar,
         setVisualizar,
         eliminarFilefn,
+        recargarBaseDeDatos,
+        filtrarbaseDeDatosActas,
+        eliminarFolderfn,
       }}
     >
       {props.children}

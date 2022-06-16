@@ -4,35 +4,41 @@ import { Formulario, MostrarResultados } from '../components/Control';
 import { useAppProvider } from '../context/actasContext/AppProvider';
 
 const Control = () => {
-  const { visualizar, setVisualizar, handleMostrar } = useAppProvider();
+  const { visualizar, setVisualizar, handleMostrar, mostrar } =
+    useAppProvider();
 
   useEffect(() => {
     setVisualizar(false);
-    handleMostrar("none")
+    handleMostrar('none');
   }, []);
 
   return (
-    <Container
-      className="pt-5"
-      fluid={'lg'}
-    >
+    <Container className="pt-5 " fluid={''}>
       <Formulario />
-      <Row>
-        <Col sm>
+      <div className="d-flex gap-5">
+        <Col>
           <MostrarResultados />
         </Col>
 
-        {visualizar && (
-          <Col sm>
-            {' '}
-            <iframe
-              width="1366px"
-              height="623px"
-              src={`https://docs.google.com/gview?url=${visualizar}&embedded=true`}
-            ></iframe>
-          </Col>
+        {mostrar === false && (
+          <>
+            {visualizar ? (
+              <Col style={{ flex: '2' }}>
+                {' '}
+                <iframe
+                  style={{ width: '100%' }}
+                  height="623px"
+                  src={`https://docs.google.com/gview?url=${visualizar}&embedded=true`}
+                ></iframe>
+              </Col>
+            ) : (
+              <Col style={{ flex: '2' }}>
+                <div className='d-flex justify-content-center align-items-center bg-secondary' style={{height: "623px", color: "white",}}><p style={{fontSize: "60px"}}>Previsualizar</p></div>
+              </Col>
+            )}
+          </>
         )}
-      </Row>
+      </div>
     </Container>
   );
 };

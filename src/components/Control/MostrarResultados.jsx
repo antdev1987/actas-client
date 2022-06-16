@@ -9,27 +9,33 @@ import {
   Row,
 } from 'react-bootstrap';
 
-import { FcFolder } from 'react-icons/fc';
+import { FiFolder } from 'react-icons/fi';
 
-import { AiOutlineFile } from 'react-icons/ai';
+import { AiOutlineFile, AiOutlineFolderOpen } from 'react-icons/ai';
+
+import { RiArrowGoBackLine } from 'react-icons/ri';
 
 import { useAppProvider } from '../../context/actasContext/AppProvider';
 
+import { useAuth } from '../../context/userContext/UserProvider';
+
 export const MostrarResultados = () => {
-  const { resultados, handleMostrar, mostrar, setVisualizar, eliminarFilefn } =
-    useAppProvider();
+  const { user } = useAuth();
+
+  const {
+    resultados,
+    handleMostrar,
+    mostrar,
+    setVisualizar,
+    eliminarFilefn,
+    eliminarFolderfn,
+  } = useAppProvider();
 
   const [saveFiles, setSaveFiles] = useState();
 
   console.log(mostrar);
 
   const cambiarPerspectiva = (idx, tof) => {
-    // const { files, _id, tipo } = info;
-
-    // files.map((e) => {
-    //   e._id = _id;
-    //   e.tipo = tipo;
-    // });
     handleMostrar(tof);
     setVisualizar(false);
     setSaveFiles(idx);
@@ -37,9 +43,10 @@ export const MostrarResultados = () => {
 
   const volver = (tof) => {
     handleMostrar(tof);
+    setVisualizar(false);
   };
 
-  const eliminar = (item, item2) => {
+  const handleEliminarFile = (item, item2) => {
     console.log(item);
     console.log(item2);
 
@@ -51,22 +58,44 @@ export const MostrarResultados = () => {
     eliminarFilefn(infoNeeded);
   };
 
+  const handleEliminarFolder = (info) => {
+    eliminarFolderfn(info);
+  };
+
   return (
     <Row className="mt-2">
-      {resultados?.length !== 0 && mostrar === true && (
+      <hr />
+      {mostrar === true && (
         <>
-          {resultados.map((item, idx) => (
-            <Col md={3} key={item._id}>
-              <Card
-                className="mt-5"
-                onClick={() => cambiarPerspectiva(idx, false)}
-              >
+          {resultados?.map((item, idx) => (
+            <Col md={2} key={item?._id}>
+              <Card>
                 <Card.Body>
-                  <Card.Title>{item.nombre}</Card.Title>
-                  <FcFolder style={{ fontSize: '150px' }} className="w-100" />
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Files: {item.files.length}
+                  <Card.Subtitle className="mb-2 text-muted d-flex align-items-center justify-content-between">
+                    Files: {item?.files?.length}
+                    {user?.role === 'admin' && (
+                      <DropdownButton
+                        variant="outline-secondary"
+                        id="bg-nested-dropdown"
+                        title=""
+                      >
+                        <Dropdown.Item
+                          eventKey="1"
+                          onClick={() => handleEliminarFolder(item)}
+                        >
+                          Eliminar
+                        </Dropdown.Item>
+                      </DropdownButton>
+                    )}
                   </Card.Subtitle>
+                  <FiFolder
+                    onClick={() => cambiarPerspectiva(idx, false)}
+                    style={{ fontSize: '140px' }}
+                    className="w-100 pt-2 pb-2"
+                  />
+                  <Card.Title style={{ textAlign: 'center' }}>
+                    {item?.nombre}
+                  </Card.Title>
                 </Card.Body>
               </Card>
             </Col>
@@ -77,40 +106,53 @@ export const MostrarResultados = () => {
       {mostrar === false && (
         <>
           <div>
-            <Button onClick={() => volver(true)}>Volver</Button>
+            <Button variant="outline-secondary" onClick={() => volver(true)}>
+              Volver <RiArrowGoBackLine />
+            </Button>
+            <h4 style={{ fontWeight: '300' }} className="mt-3">
+              <AiOutlineFolderOpen /> Estas en {resultados[saveFiles]?.nombre}/
+            </h4>
+            <hr />
           </div>
-          <>
-            {resultados[saveFiles].files.map((item) => (
-              <Col
-                md={4}
-                key={item.public_id}
-                onClick={() => setVisualizar(item.secure_url)}
+          <div
+            style={{
+              maxHeight: '623px',
+              height: 'calc(623px - 150px)',
+              overflowY: 'scroll',
+            }}
+          >
+            {resultados[saveFiles]?.files?.map((item) => (
+              <div
+                key={item?.public_id}
+                onClick={() => setVisualizar(item?.secure_url)}
+                className="d-flex justify-content-between border pt-2 pb-2"
               >
-                <Card className="mt-5">
-                  <Card.Body>
-                    <Card.Title className="d-flex align-items-center justify-content-between">
-                      {item.originalname}{' '}
-                      <DropdownButton id="bg-nested-dropdown" title="">
-                        <Dropdown.Item
-                          eventKey="1"
-                          onClick={() => eliminar(item, resultados[saveFiles])}
-                        >
-                          funciona
-                        </Dropdown.Item>
-                        <Dropdown.Item eventKey="2">
-                          Dropdown link
-                        </Dropdown.Item>
-                      </DropdownButton>{' '}
-                    </Card.Title>
-                    <AiOutlineFile
-                      style={{ fontSize: '150px' }}
-                      className="w-100"
-                    />
-                  </Card.Body>
-                </Card>
-              </Col>
+                <AiOutlineFile style={{ fontSize: '50px' }} />
+                <div>
+                  <p>{item?.originalname}</p>
+                </div>
+                <DropdownButton
+                  id="bg-nested-dropdown"
+                  title=""
+                  variant="outline-secondary"
+                >
+                  {user?.role === 'admin' && (
+                    <Dropdown.Item
+                      eventKey="1"
+                      onClick={() =>
+                        handleEliminarFile(item, resultados[saveFiles])
+                      }
+                    >
+                      Eliminar
+                    </Dropdown.Item>
+                  )}
+                  <Dropdown.Item eventKey="2" href={`${item.secure_url}`} download>
+                      Descargar
+                  </Dropdown.Item>
+                </DropdownButton>
+              </div>
             ))}
-          </>
+          </div>
         </>
       )}
     </Row>

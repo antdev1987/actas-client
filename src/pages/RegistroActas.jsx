@@ -10,10 +10,6 @@ const RegistroActas = () => {
     guardarFolderUsuariofn,
     handleMostrar
   } = useAppProvider();
-  
-  useEffect(() => {
-    handleMostrar([])
-  }, []);
 
   const inputRef = useRef();
 
