@@ -3,12 +3,18 @@ import axios from 'axios'
 import { createContext,useContext,useState } from 'react'
 
 import {useNavigate} from 'react-router-dom'
+import { useAppProvider } from '../actasContext/AppProvider'
 
 const UserContext = createContext()
 
 export const UserProvider= props=>{
 
     const [user,setUser]= useState(JSON.parse(localStorage.getItem('uid')) || '')
+
+ 
+    const [isUserActiveLoading,setIsUserActiveLoading] = useState(false)
+
+
 
 
     const navigate = useNavigate()
@@ -18,7 +24,9 @@ export const UserProvider= props=>{
     const loginUserfn =async(userData, setError)=>{
 
         // https://actas-server.herokuapp.com/api/user/login
+        
         try {
+            setIsUserActiveLoading(true)
 
             const endPoint = `http://192.168.100.7:4000/api/user/login`
 
@@ -31,7 +39,7 @@ export const UserProvider= props=>{
             console.log(data)
 
             localStorage.setItem('uid', JSON.stringify(data));
-
+            setIsUserActiveLoading(false)
             setUser(data)
         } catch (error) {
             // Swal.fire({
@@ -41,6 +49,7 @@ export const UserProvider= props=>{
             //   })
             console.log(error.response.data.msg)
             setError(error.response.data.msg)
+            setIsUserActiveLoading(false)
         }
     }
 
@@ -55,6 +64,7 @@ export const UserProvider= props=>{
         <UserContext.Provider
         value={{
             user,
+            isUserActiveLoading,
 
             setUser,
             loginUserfn,

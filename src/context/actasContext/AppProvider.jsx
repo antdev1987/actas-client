@@ -21,11 +21,14 @@ const AppContext = createContext({
 export const AppProvider = (props) => {
   // const [baseDatosActas, setBaseDatosActas] = useState({})
 
+
   const [state, dispatch] = useReducer(AppReducer, InitialState);
 
   const [mostrar, setMostrar] = useState('');
-
   const [visualizar, setVisualizar] = useState(false);
+  const [isActiveLoading, setIsActiveLoading] = useState(false)
+
+
 
   const { user, setUser } = useAuth();
 
@@ -74,6 +77,7 @@ export const AppProvider = (props) => {
   const dynamicurlLocal = 'http://192.168.100.7:4000/';
   //https://actas-server.herokuapp.com
 
+  //
   const baseDeDatosActas = async () => {
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
@@ -98,6 +102,9 @@ export const AppProvider = (props) => {
     }
   };
 
+
+
+  //funcion que obtiner ultimos datos de base de datos para poder filtrar busqueda en react
   const filtrarbaseDeDatosActas = async (selector, nombre) => {
     console.log(selector, nombre);
 
@@ -128,6 +135,8 @@ export const AppProvider = (props) => {
     }
   };
 
+
+  //esta funcion sirve para que el administrador pueda crear un nuevo usuario para acceder a la aplicacion
   const createNewUserAppfn = async (userData) => {
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
@@ -139,19 +148,23 @@ export const AppProvider = (props) => {
         Authorization: `Bearer ${token.token}`,
       },
     };
-
     try {
+      setIsActiveLoading(true)
       const endPoint = `${dynamicurlLocal}api/user/crear-usuario`;
       const { data } = await axios.post(endPoint, userData, config);
 
       console.log(data);
 
       setOneUserBd(data);
+      setIsActiveLoading(false)
     } catch (error) {
       console.log(error.response.data.msg);
+      setIsActiveLoading(false)
     }
   };
 
+
+  //este codigo sirve para poder eliminar un usuario ya creado
   const deleteNewUserAppfn = async (id) => {
     console.log(id);
     const token = JSON.parse(localStorage.getItem('uid'));
@@ -174,6 +187,10 @@ export const AppProvider = (props) => {
     }
   };
 
+
+  ///////////// codigo de creacion de usario de folder en adelante
+
+  //este codigo sirve para crear un nombre de usuario para alamacenar archivos docx xlsx pdf
   const crearFolderUsuariofn = async (setUserFolder, inputUsuario) => {
     console.log(inputUsuario);
 
@@ -198,6 +215,7 @@ export const AppProvider = (props) => {
     }
   };
 
+  //este codigo sirve para almacenar los archivos docx xlsx pdf en un usuario especifico
   const guardarFolderUsuariofn = async (setData, id) => {
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
@@ -219,6 +237,7 @@ export const AppProvider = (props) => {
     }
   };
 
+  //con este codigo podra buscar si existe un usuario en la base de datos
   const buscarFolderUsuariofn = async (setUserFolder, inputUsuario) => {
     console.log(inputUsuario);
 
@@ -325,6 +344,7 @@ export const AppProvider = (props) => {
         baseDatosActas: state.baseDatosActas,
         resultados: state.resultados,
         mostrar,
+        isActiveLoading:isActiveLoading,
 
         createNewUserAppfn,
         deleteNewUserAppfn,
@@ -339,6 +359,7 @@ export const AppProvider = (props) => {
         recargarBaseDeDatos,
         filtrarbaseDeDatosActas,
         eliminarFolderfn,
+        setIsActiveLoading
       }}
     >
       {props.children}

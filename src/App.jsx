@@ -1,13 +1,8 @@
-
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ToastProvider } from "react-toast-notifications";
 
-import { UserProvider } from "./context/userContext/UserProvider";
+import { useAuth, UserProvider } from "./context/userContext/UserProvider";
 import { AppProvider } from "./context/actasContext/AppProvider";
 
 import Login from "./pages/Login";
@@ -23,45 +18,44 @@ import PrivateRouteAdmin from "./pages/permisos/PrivateRouteAdmin";
 
 import AdminUsers from "./pages/AdminUsers";
 
+import Loading from "./layout/Loading";
+
 
 function App() {
 
   return (
-   
     <BrowserRouter>
-    <UserProvider>
-      <AppProvider>
-      <NavBar/>
-      <ToastProvider>
-      <Routes>
+      <UserProvider>
+        <AppProvider>
 
+          <Loading>
+            <NavBar />
+            <ToastProvider>
+              <Routes>
+                <Route element={<PublicRouteApp />}>
+                  <Route path="/" element={<Login />} />
+                </Route>
 
+                <Route element={<PrivateRouteUser />}>
+                  <Route path="/registro-actas" element={<RegistroActas />} />
+                  <Route path="/control" element={<Control />} />
+                  <Route
+                    path="plan-mantenimiento"
+                    element={<PlanMantenimiento />}
+                  />
+                </Route>
 
-      <Route element={<PublicRouteApp />}>
-        <Route path="/" element={<Login />} />
-      </Route>
-
-
-      <Route element={<PrivateRouteUser />}>
-          <Route path="/registro-actas" element={<RegistroActas />} />
-          <Route path='/control' element={<Control />} />
-          <Route path='plan-mantenimiento' element={<PlanMantenimiento />} />
-      </Route>
-
-
-      <Route element={<PrivateRouteAdmin />}>
-              <Route path='/admin/admin-users' element={<AdminUsers />}/>
-              {/* <Route path='/admin/mantencion' element={<Mantencion  />}/> */}
-      </Route>
-
-      </Routes>
-      </ToastProvider>
-      </AppProvider>
-    </UserProvider>
+                <Route element={<PrivateRouteAdmin />}>
+                  <Route path="/admin/admin-users" element={<AdminUsers />} />
+                  {/* <Route path='/admin/mantencion' element={<Mantencion  />}/> */}
+                </Route>
+              </Routes>
+            </ToastProvider>
+          </Loading>
+        </AppProvider>
+      </UserProvider>
     </BrowserRouter>
-
-
-  )
+  );
 }
 
-export default App
+export default App;

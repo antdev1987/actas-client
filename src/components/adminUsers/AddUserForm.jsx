@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 import { useAppProvider } from "../../context/actasContext/AppProvider";
-import { CSSTransition } from 'react-transition-group';
+import { CSSTransition } from "react-transition-group";
 
-import './AddUserForm.css'
+import "./AddUserForm.css";
 
 const initialInputs = {
   email: "",
@@ -14,13 +14,12 @@ const initialInputs = {
 const AddUserForm = () => {
   const { createNewUserAppfn } = useAppProvider();
   const [inputs, setInputs] = useState(initialInputs);
-   const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createNewUserAppfn(inputs);
 
-    console.log("el submit");
     setInputs({
       email: "",
       name: "",
@@ -38,16 +37,16 @@ const AddUserForm = () => {
         Crear Usuario
       </button>
 
-      {/* {showForm && ( */}
-        
-        <CSSTransition 
-          in={showForm}
-          unmountOnExit
-          timeout={400}
-          classNames='slide'
+      <CSSTransition
+        in={showForm}
+        unmountOnExit
+        timeout={400}
+        classNames="slide"
+      >
+        <form
+          className={`w-50 m-auto mt-1 border p-3 bg-light shadow`}
+          onSubmit={handleSubmit}
         >
-
-        <form className={`w-50 m-auto mt-1 border p-3 bg-light shadow`} onSubmit={handleSubmit}>
           <h3 className="text-center mb-3">Crear un nuevo Usuario</h3>
 
           <div className="input-group mb-3">
@@ -94,8 +93,7 @@ const AddUserForm = () => {
             Submit
           </button>
         </form>
-           </CSSTransition>
-      {/* )} */}
+      </CSSTransition>
     </div>
   );
 };

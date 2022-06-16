@@ -1,6 +1,4 @@
 import React,{memo} from "react";
-
-
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 
 import { useAppProvider } from "../../context/actasContext/AppProvider";
@@ -8,10 +6,9 @@ import { useAppProvider } from "../../context/actasContext/AppProvider";
 
 const ListUsers = ({ userBd }) => {
   const {deleteNewUserAppfn} = useAppProvider()
-  console.log(userBd);
 
   const handleDelete=(id)=>{
-    console.log(id)
+
     Swal.fire({
       title: 'Estas Seguro?',
       text: "No seras capaz de revertir esto!",
