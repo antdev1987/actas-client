@@ -20,14 +20,12 @@ import AdminUsers from "./pages/AdminUsers";
 
 import Loading from "./layout/Loading";
 
-
 function App() {
-
   return (
     <BrowserRouter>
       <UserProvider>
+          <ToastProvider>
         <AppProvider>
-
           <Loading>
             <NavBar />
             <ToastProvider>
@@ -53,6 +51,7 @@ function App() {
             </ToastProvider>
           </Loading>
         </AppProvider>
+            </ToastProvider>
       </UserProvider>
     </BrowserRouter>
   );

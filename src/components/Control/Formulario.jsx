@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button, Form } from 'react-bootstrap';
+import { useToasts } from 'react-toast-notifications';
 
 import { useAppProvider } from '../../context/actasContext/AppProvider';
 
@@ -8,7 +9,6 @@ export const Formulario = () => {
   // Obteninedo informacion de la base de datos
   const {
     baseDatosActas,
-    guardarResultados,
     handleMostrar,
     setVisualizar,
     filtrarbaseDeDatosActas,
@@ -20,16 +20,15 @@ export const Formulario = () => {
     nombre: '',
   });
 
-  console.log(baseDatosActas);
-
   const savingValues = (e) => {
     setGetValues({ ...getValues, [e.target.name]: e.target.value });
   };
 
   const filtrar = async (e) => {
     e.preventDefault();
+
     filtrarbaseDeDatosActas(getValues.selector, getValues.nombre);
-   
+
     handleMostrar(true);
     setVisualizar(false);
   };
