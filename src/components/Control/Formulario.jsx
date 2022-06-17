@@ -12,7 +12,6 @@ export const Formulario = () => {
     handleMostrar,
     setVisualizar,
     filtrarbaseDeDatosActas,
-    resultados
   } = useAppProvider();
 
   // obteniendo valores de los inputs
@@ -27,8 +26,9 @@ export const Formulario = () => {
 
   const filtrar = async (e) => {
     e.preventDefault();
+
     filtrarbaseDeDatosActas(getValues.selector, getValues.nombre);
-   
+
     handleMostrar(true);
     setVisualizar(false);
   };

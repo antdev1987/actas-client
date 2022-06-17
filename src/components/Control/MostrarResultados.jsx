@@ -121,9 +121,9 @@ export const MostrarResultados = () => {
               overflowY: 'scroll',
             }}
           >
-            {resultados[saveFiles]?.files?.map((item) => (
+            {resultados[saveFiles]?.files?.map((item, idx) => (
               <div
-                key={item?.public_id}
+                key={item?.public_id + idx}
                 onClick={() => setVisualizar(item?.secure_url)}
                 className="d-flex justify-content-between border pt-2 pb-2"
               >

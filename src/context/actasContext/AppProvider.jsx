@@ -21,7 +21,7 @@ const AppContext = createContext({
 
 export const AppProvider = (props) => {
   // const [baseDatosActas, setBaseDatosActas] = useState({})
-  const {addToast} = useToasts()
+  const { addToast } = useToasts();
 
   const [state, dispatch] = useReducer(AppReducer, InitialState);
 
@@ -103,6 +103,31 @@ export const AppProvider = (props) => {
   const filtrarbaseDeDatosActas = async (selector, nombre) => {
     console.log(selector, nombre);
 
+    var accent_map = {
+      á: 'a',
+      é: 'e',
+      è: 'e',
+      í: 'i',
+      ó: 'o',
+      ú: 'u',
+      Á: 'a',
+      É: 'e',
+      è: 'e',
+      Í: 'i',
+      Ó: 'o',
+      Ú: 'u',
+    };
+    function accent_fold(s) {
+      if (!s) {
+        return '';
+      }
+      var ret = '';
+      for (var i = 0; i < s.length; i++) {
+        ret += accent_map[s.charAt(i)] || s.charAt(i);
+      }
+      return ret;
+    }
+
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
       setUserBd('');
@@ -119,20 +144,20 @@ export const AppProvider = (props) => {
 
       const { data } = await axios.get(endPoint, config);
 
-      const filtrado = data[selector].filter((item) =>
-        item.nombre.toLowerCase().includes(nombre.toLowerCase())
-      );
-
-     
+      const filtrado = data[selector].filter((item) => {
+        const nombreBD = accent_fold(item.nombre.toLowerCase())
+        const name = accent_fold(nombre.toLowerCase())
+        return nombreBD.includes(name);
+      });
 
       guardarResultados(filtrado);
 
-      if (filtrado.length !== 0) return
+      if (filtrado.length !== 0) return;
       addToast(`No hubo resultados`, {
         appearance: 'error',
         autoDismiss: true,
       });
-      
+
       console.log(filtrado, 'base de datos');
     } catch (error) {
       console.log(error.response.data.msg);
@@ -316,7 +341,9 @@ export const AppProvider = (props) => {
 
       const { data } = await axios.delete(endPoint, config);
 
-      const testFiltrado2 = state.resultados.filter((item) => item._id !== info._id );
+      const testFiltrado2 = state.resultados.filter(
+        (item) => item._id !== info._id
+      );
       console.log(testFiltrado2);
 
       eliminarResultados(testFiltrado2);
