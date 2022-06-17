@@ -8,7 +8,6 @@ const RegistroActas = () => {
     buscarFolderUsuariofn,
     crearFolderUsuariofn,
     guardarFolderUsuariofn,
-    handleMostrar
   } = useAppProvider();
 
   const inputRef = useRef();

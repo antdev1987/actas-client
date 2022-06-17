@@ -30,9 +30,9 @@ function App() {
    
     <BrowserRouter>
     <UserProvider>
+      <ToastProvider>
       <AppProvider>
       <NavBar/>
-      <ToastProvider>
       <Routes>
 
 
@@ -55,8 +55,8 @@ function App() {
       </Route>
 
       </Routes>
-      </ToastProvider>
       </AppProvider>
+      </ToastProvider>
     </UserProvider>
     </BrowserRouter>
 

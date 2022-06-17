@@ -10,6 +10,7 @@ import {
 import { AppReducer, InitialState } from './AppReducer';
 
 import { useAuth } from '../userContext/UserProvider';
+import { useToasts } from 'react-toast-notifications';
 
 const AppContext = createContext({
   crearFolderUsuariofn: () => {},
@@ -20,6 +21,7 @@ const AppContext = createContext({
 
 export const AppProvider = (props) => {
   // const [baseDatosActas, setBaseDatosActas] = useState({})
+  const {addToast} = useToasts()
 
   const [state, dispatch] = useReducer(AppReducer, InitialState);
 
@@ -121,7 +123,16 @@ export const AppProvider = (props) => {
         item.nombre.toLowerCase().includes(nombre.toLowerCase())
       );
 
+     
+
       guardarResultados(filtrado);
+
+      if (filtrado.length !== 0) return
+      addToast(`No hubo resultados`, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      
       console.log(filtrado, 'base de datos');
     } catch (error) {
       console.log(error.response.data.msg);
