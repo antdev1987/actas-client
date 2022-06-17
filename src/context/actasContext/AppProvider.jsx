@@ -106,7 +106,6 @@ export const AppProvider = (props) => {
     var accent_map = {
       á: 'a',
       é: 'e',
-      è: 'e',
       í: 'i',
       ó: 'o',
       ú: 'u',
