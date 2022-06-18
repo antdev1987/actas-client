@@ -105,7 +105,6 @@ const RegistroActas = () => {
 
     data.append('selector', inputUsuario.selector);
 
-    addToast('Enviado', { appearance: 'success', autoDismiss: true });
     inputRef.current.value = null;
     setSaveFile([]);
     setMostrar({ ...mostrar, guardar: false });

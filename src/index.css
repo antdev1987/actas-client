@@ -13,3 +13,7 @@ code {
     monospace;
 }
 
+.list-box:hover,
+.activeBox {
+  background: #ececec;
+}

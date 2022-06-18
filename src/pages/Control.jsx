@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { useEffect, useMemo, useState } from 'react';
+import { Col, Container } from 'react-bootstrap';
 import { Formulario, MostrarResultados } from '../components/Control';
 import { useAppProvider } from '../context/actasContext/AppProvider';
 
@@ -8,7 +8,7 @@ const Control = () => {
     useAppProvider();
 
   useEffect(() => {
-    setVisualizar(false);
+    setVisualizar('');
     handleMostrar('none');
   }, []);
 
@@ -33,7 +33,12 @@ const Control = () => {
               </Col>
             ) : (
               <Col style={{ flex: '2' }}>
-                <div className='d-flex justify-content-center align-items-center bg-secondary' style={{height: "623px", color: "white",}}><p style={{fontSize: "60px"}}>Previsualizar</p></div>
+                <div
+                  className="d-flex justify-content-center align-items-center bg-secondary"
+                  style={{ height: '623px', color: 'white' }}
+                >
+                  <p style={{ fontSize: '60px' }}>Previsualizar</p>
+                </div>
               </Col>
             )}
           </>

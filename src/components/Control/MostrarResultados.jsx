@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import {
   Button,
@@ -11,7 +11,11 @@ import {
 
 import { FiFolder } from 'react-icons/fi';
 
-import { AiOutlineFile, AiOutlineFolderOpen } from 'react-icons/ai';
+import {
+  AiOutlineFile,
+  AiOutlineFolderOpen,
+  AiOutlineReload,
+} from 'react-icons/ai';
 
 import { RiArrowGoBackLine } from 'react-icons/ri';
 
@@ -19,7 +23,13 @@ import { useAppProvider } from '../../context/actasContext/AppProvider';
 
 import { useAuth } from '../../context/userContext/UserProvider';
 
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
+
 export const MostrarResultados = () => {
+  const [refresh, setRefresh] = useState('');
+
+  const [id, setId] = useState('');
+
   const { user } = useAuth();
 
   const {
@@ -29,6 +39,7 @@ export const MostrarResultados = () => {
     setVisualizar,
     eliminarFilefn,
     eliminarFolderfn,
+    visualizar,
   } = useAppProvider();
 
   const [saveFiles, setSaveFiles] = useState();
@@ -37,30 +48,68 @@ export const MostrarResultados = () => {
 
   const cambiarPerspectiva = (idx, tof) => {
     handleMostrar(tof);
-    setVisualizar(false);
+    setVisualizar('');
     setSaveFiles(idx);
   };
 
   const volver = (tof) => {
     handleMostrar(tof);
-    setVisualizar(false);
+    setVisualizar('');
   };
 
   const handleEliminarFile = (item, item2) => {
     console.log(item);
     console.log(item2);
 
-    const infoNeeded = {
-      public_id: item.public_id,
-      _id: item2._id,
-      tipo: item2.tipo,
-    };
-    eliminarFilefn(infoNeeded);
+    Swal.fire({
+      title: 'Estas Seguro?',
+      text: 'No seras capaz de revertir esto!',
+      icon: 'warning',
+      cancelButtonText: 'Cancelar',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Eliminar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const infoNeeded = {
+          public_id: item.public_id,
+          _id: item2._id,
+          tipo: item2.tipo,
+        };
+        eliminarFilefn(infoNeeded);
+        Swal.fire('Eliminado!', 'Usuario Eliminado.', 'success');
+      }
+    });
   };
 
   const handleEliminarFolder = (info) => {
-    eliminarFolderfn(info);
+    Swal.fire({
+      title: 'Estas Seguro?',
+      text: 'No seras capaz de revertir esto!',
+      icon: 'warning',
+      cancelButtonText: 'Cancelar',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Eliminar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        eliminarFolderfn(info);
+
+        Swal.fire('Eliminado!', 'Usuario Eliminado.', 'success');
+      }
+    });
   };
+
+  const handleCargar = () => {
+    setVisualizar('');
+    setTimeout(() => {
+      setVisualizar(refresh);
+    }, 0);
+  };
+
+  useMemo(() => setRefresh(visualizar), [visualizar]);
 
   return (
     <Row className="mt-2">
@@ -106,9 +155,16 @@ export const MostrarResultados = () => {
       {mostrar === false && (
         <>
           <div>
-            <Button variant="outline-secondary" onClick={() => volver(true)}>
-              Volver <RiArrowGoBackLine />
-            </Button>
+            <div className="d-flex justify-content-between align-itemc">
+              <Button variant="outline-secondary" onClick={() => volver(true)}>
+                Volver <RiArrowGoBackLine />
+              </Button>
+
+              <AiOutlineReload
+                onClick={handleCargar}
+                style={{ fontSize: '30px', cursor: 'pointer' }}
+              />
+            </div>
             <h4 style={{ fontWeight: '300' }} className="mt-3">
               <AiOutlineFolderOpen /> Estas en {resultados[saveFiles]?.nombre}/
             </h4>
@@ -124,8 +180,15 @@ export const MostrarResultados = () => {
             {resultados[saveFiles]?.files?.map((item, idx) => (
               <div
                 key={item?.public_id + idx}
-                onClick={() => setVisualizar(item?.secure_url)}
-                className="d-flex justify-content-between border pt-2 pb-2"
+                onClick={() => {
+                  setVisualizar(item?.secure_url),
+                    handleMostrar(false),
+                    setId(item?.public_id);
+                }}
+                className={`d-flex justify-content-between border pt-2 pb-2 list-box ${
+                  item.public_id === id ? 'activeBox' : null
+                }`}
+                style={{ cursor: 'pointer' }}
               >
                 <AiOutlineFile style={{ fontSize: '50px' }} />
                 <div>
@@ -146,8 +209,12 @@ export const MostrarResultados = () => {
                       Eliminar
                     </Dropdown.Item>
                   )}
-                  <Dropdown.Item eventKey="2" href={`${item.secure_url}`} download>
-                      Descargar
+                  <Dropdown.Item
+                    eventKey="2"
+                    href={`${item.secure_url}`}
+                    download
+                  >
+                    Descargar
                   </Dropdown.Item>
                 </DropdownButton>
               </div>

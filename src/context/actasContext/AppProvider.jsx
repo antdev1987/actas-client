@@ -23,14 +23,11 @@ export const AppProvider = (props) => {
   // const [baseDatosActas, setBaseDatosActas] = useState({})
   const { addToast } = useToasts();
 
-
   const [state, dispatch] = useReducer(AppReducer, InitialState);
 
   const [mostrar, setMostrar] = useState('');
-  const [visualizar, setVisualizar] = useState(false);
-  const [isActiveLoading, setIsActiveLoading] = useState(false)
-
-
+  const [visualizar, setVisualizar] = useState('');
+  const [isActiveLoading, setIsActiveLoading] = useState(false);
 
   const { user, setUser } = useAuth();
 
@@ -105,8 +102,6 @@ export const AppProvider = (props) => {
     }
   };
 
-
-
   //funcion que obtiner ultimos datos de base de datos para poder filtrar busqueda en react
   const filtrarbaseDeDatosActas = async (selector, nombre) => {
     console.log(selector, nombre);
@@ -152,8 +147,8 @@ export const AppProvider = (props) => {
       const { data } = await axios.get(endPoint, config);
 
       const filtrado = data[selector].filter((item) => {
-        const nombreBD = accent_fold(item.nombre.toLowerCase())
-        const name = accent_fold(nombre.toLowerCase())
+        const nombreBD = accent_fold(item.nombre.toLowerCase());
+        const name = accent_fold(nombre.toLowerCase());
         return nombreBD.includes(name);
       });
 
@@ -171,7 +166,6 @@ export const AppProvider = (props) => {
     }
   };
 
-
   //esta funcion sirve para que el administrador pueda crear un nuevo usuario para acceder a la aplicacion
   const createNewUserAppfn = async (userData) => {
     const token = JSON.parse(localStorage.getItem('uid'));
@@ -185,20 +179,19 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      setIsActiveLoading(true)
+      setIsActiveLoading(true);
       const endPoint = `${dynamicurlLocal}api/user/crear-usuario`;
       const { data } = await axios.post(endPoint, userData, config);
 
       console.log(data);
 
       setOneUserBd(data);
-      setIsActiveLoading(false)
+      setIsActiveLoading(false);
     } catch (error) {
       console.log(error.response.data.msg);
-      setIsActiveLoading(false)
+      setIsActiveLoading(false);
     }
   };
-
 
   //este codigo sirve para poder eliminar un usuario ya creado
   const deleteNewUserAppfn = async (id) => {
@@ -222,7 +215,6 @@ export const AppProvider = (props) => {
       console.log(error.response);
     }
   };
-
 
   ///////////// codigo de creacion de usario de folder en adelante
 
@@ -265,11 +257,15 @@ export const AppProvider = (props) => {
     };
     try {
       const endPoint = `${dynamicurlLocal}api/actas/guardar-archivos/${id}`;
+      setIsActiveLoading(true);
       const { data } = await axios.post(endPoint, setData, config);
+      setIsActiveLoading(false);
       recargarBaseDeDatos();
+      addToast('Enviado', { appearance: 'success', autoDismiss: true });
       console.log(data, 'funtion asdfafsdafds');
     } catch (error) {
       console.log(error.response.data.msg);
+      setIsActiveLoading(false);
     }
   };
 
@@ -382,7 +378,7 @@ export const AppProvider = (props) => {
         baseDatosActas: state.baseDatosActas,
         resultados: state.resultados,
         mostrar,
-        isActiveLoading:isActiveLoading,
+        isActiveLoading: isActiveLoading,
 
         createNewUserAppfn,
         deleteNewUserAppfn,
@@ -397,7 +393,7 @@ export const AppProvider = (props) => {
         recargarBaseDeDatos,
         filtrarbaseDeDatosActas,
         eliminarFolderfn,
-        setIsActiveLoading
+        setIsActiveLoading,
       }}
     >
       {props.children}
