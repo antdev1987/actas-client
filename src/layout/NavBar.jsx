@@ -56,7 +56,7 @@ const NavBar = () => {
 
                 <NavDropdown.Divider />
                 <NavDropdown.Item
-                  href="#action/3.4"
+                  href="#"
                   onClick={() => logoutUserfn()}
                 >
                   Cerrar Sesion

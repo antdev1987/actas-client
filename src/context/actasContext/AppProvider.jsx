@@ -73,8 +73,8 @@ export const AppProvider = (props) => {
     return 'recargado';
   };
 
-  // const dynamicurlLocal = 'http://192.168.100.7:4000/';
-  const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
+   const dynamicurlLocal = 'http://192.168.100.248:4000/';
+  //const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
   //https://actas-server.herokuapp.com
 
   //
