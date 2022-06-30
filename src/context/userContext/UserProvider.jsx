@@ -1,19 +1,17 @@
 import axios from 'axios'
 
-import { createContext,useContext,useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAppProvider } from '../actasContext/AppProvider'
 
 const UserContext = createContext()
 
-export const UserProvider= props=>{
+export const UserProvider = props => {
 
-    const [user,setUser]= useState(JSON.parse(localStorage.getItem('uid')) || '')
-
- 
-    const [isUserActiveLoading,setIsUserActiveLoading] = useState(false)
-
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('uid')) || '')
+    const [isUserActiveLoading, setIsUserActiveLoading] = useState(false)
+    const [movientosUsuarios, setMovimientosUsuarios] = useState([])
 
 
 
@@ -21,17 +19,17 @@ export const UserProvider= props=>{
 
 
 
-    const loginUserfn =async(userData, setError)=>{
+    const loginUserfn = async (userData, setError) => {
 
         // https://actas-server.herokuapp.com/api/user/login
-        
+
         try {
             setIsUserActiveLoading(true)
 
-            const endPoint = `http://192.168.100.248:4000/api/user/login`
-            //const endPoint = `https://actas-server.herokuapp.com/api/user/login`
+            //const endPoint = `http://192.168.100.248:4000/api/user/login`
+            const endPoint = `https://actas-server.herokuapp.com/api/user/login`
 
-            const {data}= await axios.post(endPoint,userData)
+            const { data } = await axios.post(endPoint, userData)
             // Swal.fire({
             //     icon: 'success',
             //     title: 'Espera...',
@@ -54,7 +52,36 @@ export const UserProvider= props=>{
         }
     }
 
-    const logoutUserfn =()=>{
+
+    const movientosUsuariosfn = async()=>{
+        console.log('en user provider funcion movientos usuarios')
+
+        const token = JSON.parse(localStorage.getItem('uid'));
+        if (!token) {
+          setUser('');
+          return;
+        }
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token.token}`,
+          },
+        };
+        try {
+            const endPoint = `https://actas-server.herokuapp.com/api/user/movimientos-usuarios`
+          //const endPoint = `http://192.168.100.248:4000/api/user/movimientos-usuarios`;
+          const { data } = await axios.get(endPoint, config);
+          
+          setMovimientosUsuarios(data)
+          console.log(data, 'funtion movientos usuarios');
+          
+        } catch (error) {
+          console.log(error.response.data.msg);
+        }
+
+    }
+
+    /////////////////////////
+    const logoutUserfn = () => {
         localStorage.clear()
         setUser('')
         navigate('/')
@@ -63,20 +90,22 @@ export const UserProvider= props=>{
 
     return (
         <UserContext.Provider
-        value={{
-            user,
-            isUserActiveLoading,
+            value={{
+                user,
+                isUserActiveLoading,
+                movientosUsuarios,
 
-            setUser,
-            loginUserfn,
-            logoutUserfn
-        }}
+                setUser,
+                loginUserfn,
+                logoutUserfn,
+                movientosUsuariosfn
+            }}
         >
             {props.children}
         </UserContext.Provider>
     )
 }
 
-export const useAuth =()=>{
+export const useAuth = () => {
     return useContext(UserContext)
 }

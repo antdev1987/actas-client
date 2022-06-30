@@ -13,10 +13,10 @@ import { useAuth } from '../userContext/UserProvider';
 import { useToasts } from 'react-toast-notifications';
 
 const AppContext = createContext({
-  crearFolderUsuariofn: () => {},
-  guardarFolderUsuariofn: () => {},
+  crearFolderUsuariofn: () => { },
+  guardarFolderUsuariofn: () => { },
   baseDatosActas: [],
-  guardarResultados: (payload) => {},
+  guardarResultados: (payload) => { },
 });
 
 export const AppProvider = (props) => {
@@ -73,8 +73,8 @@ export const AppProvider = (props) => {
     return 'recargado';
   };
 
-   const dynamicurlLocal = 'http://192.168.100.248:4000/';
-  //const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
+  // const dynamicurlLocal = 'http://192.168.100.248:4000/';
+  const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
   //https://actas-server.herokuapp.com
 
   //
@@ -334,6 +334,38 @@ export const AppProvider = (props) => {
     }
   };
 
+
+
+  const descargarFilefn = async (info) => {
+    console.log(info);
+
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+      params: {
+        ...info
+      },
+    };
+    console.log(config)
+    try {
+
+      const endPoint = `${dynamicurlLocal}api/actas/descargar-un-archivo`;
+      const { data } = await axios.get(endPoint, config);
+      // recargarBaseDeDatos();
+      console.log(data, 'funtion descargar file');
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+
+
   const eliminarFolderfn = async (info) => {
     console.log(info);
 
@@ -394,6 +426,7 @@ export const AppProvider = (props) => {
         filtrarbaseDeDatosActas,
         eliminarFolderfn,
         setIsActiveLoading,
+        descargarFilefn
       }}
     >
       {props.children}

@@ -27,6 +27,7 @@ const Control = () => {
                 {' '}
                 <iframe
                   style={{ width: '100%' }}
+                  loading='lazy'
                   height="623px"
                   src={`https://docs.google.com/gview?url=${visualizar}&embedded=true`}
                 ></iframe>

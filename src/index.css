@@ -17,3 +17,8 @@ code {
 .activeBox {
   background: #ececec;
 }
+
+.scrollClass {
+  max-height:50vh;
+  overflow-y: scroll;
+}

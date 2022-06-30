@@ -19,6 +19,7 @@ import PrivateRouteAdmin from "./pages/permisos/PrivateRouteAdmin";
 import AdminUsers from "./pages/AdminUsers";
 
 import Loading from "./layout/Loading";
+import Bitacora from "./pages/Bitacora";
 
 function App() {
   return (
@@ -45,7 +46,7 @@ function App() {
 
                 <Route element={<PrivateRouteAdmin />}>
                   <Route path="/admin/admin-users" element={<AdminUsers />} />
-                  {/* <Route path='/admin/mantencion' element={<Mantencion  />}/> */}
+                  <Route path='/admin/bitacora' element={<Bitacora />}/> 
                 </Route>
               </Routes>
             </ToastProvider>

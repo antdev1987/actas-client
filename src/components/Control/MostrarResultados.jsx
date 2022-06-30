@@ -40,6 +40,7 @@ export const MostrarResultados = () => {
     eliminarFilefn,
     eliminarFolderfn,
     visualizar,
+    descargarFilefn
   } = useAppProvider();
 
   const [saveFiles, setSaveFiles] = useState();
@@ -108,6 +109,12 @@ export const MostrarResultados = () => {
       setVisualizar(refresh);
     }, 0);
   };
+
+  const handleDescargar=(originalName, tipo, nombre)=>{
+    // console.log(tipo);
+    // console.log('en descargar',originalName)
+    descargarFilefn({tipo,originalName,nombre})
+  }
 
   useMemo(() => setRefresh(visualizar), [visualizar]);
 
@@ -213,6 +220,7 @@ export const MostrarResultados = () => {
                     eventKey="2"
                     href={`${item.secure_url}`}
                     download
+                    onClick={()=>handleDescargar(item.originalname, resultados[saveFiles].tipo, resultados[saveFiles].nombre)}
                   >
                     Descargar
                   </Dropdown.Item>
