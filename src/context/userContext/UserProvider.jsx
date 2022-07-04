@@ -26,8 +26,8 @@ export const UserProvider = props => {
         try {
             setIsUserActiveLoading(true)
 
-            //const endPoint = `http://192.168.100.248:4000/api/user/login`
-            const endPoint = `https://actas-server.herokuapp.com/api/user/login`
+            const endPoint = `http://192.168.100.248:4000/api/user/login`
+            //const endPoint = `https://actas-server.herokuapp.com/api/user/login`
 
             const { data } = await axios.post(endPoint, userData)
             // Swal.fire({
@@ -67,8 +67,8 @@ export const UserProvider = props => {
           },
         };
         try {
-            const endPoint = `https://actas-server.herokuapp.com/api/user/movimientos-usuarios`
-          //const endPoint = `http://192.168.100.248:4000/api/user/movimientos-usuarios`;
+          // const endPoint = `https://actas-server.herokuapp.com/api/user/movimientos-usuarios`
+          const endPoint = `http://192.168.100.248:4000/api/user/movimientos-usuarios`;
           const { data } = await axios.get(endPoint, config);
           
           setMovimientosUsuarios(data)
