@@ -1,7 +1,8 @@
 export const InitialState ={
     userBd:[],
     baseDatosActas: {},
-    resultados: []
+    resultados: [],
+    eventosBd:[]
 }
 
 export const AppReducer = (state,action)=>{
@@ -47,6 +48,28 @@ export const AppReducer = (state,action)=>{
             return {
                 ...state, 
                 resultados: action.payload
+            }
+        }
+
+        case 'GUARDAR-EVENTO':{
+            return{
+                ...state,
+                eventosBd:[...action.payload]
+            }
+        }
+
+        case 'ADD-ONE-EVENT':{
+            return{
+                ...state,
+                eventosBd:[...state.eventosBd, action.payload]
+            }
+        }
+
+        case 'DELETE-LOCAL-EVENT':{
+            console.log(state.userBd)
+            return {
+                ...state,
+                eventosBd:state.eventosBd.filter(item=> item._id.toString() !== action.payload)
             }
         }
 

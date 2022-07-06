@@ -22,3 +22,14 @@ code {
   max-height:50vh;
   overflow-y: scroll;
 }
+
+
+.modalButton{
+  border-radius:100% !important;
+  bottom:25px;
+  /* right:500px; */
+  left:50px;
+  /* font-size: 30px; */
+  /* padding:5px; */
+  position:fixed;
+}

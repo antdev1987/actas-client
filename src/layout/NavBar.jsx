@@ -11,8 +11,6 @@ import { useAuth } from "../context/userContext/UserProvider";
 const NavBar = () => {
   const { user, logoutUserfn } = useAuth();
 
-  console.log(user)
-
   return (
     <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
       <Container>

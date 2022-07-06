@@ -20,24 +20,20 @@ const AppContext = createContext({
 });
 
 export const AppProvider = (props) => {
-  // const [baseDatosActas, setBaseDatosActas] = useState({})
   const { addToast } = useToasts();
-
   const [state, dispatch] = useReducer(AppReducer, InitialState);
 
   const [mostrar, setMostrar] = useState('');
   const [visualizar, setVisualizar] = useState('');
   const [isActiveLoading, setIsActiveLoading] = useState(false);
 
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
 
   useEffect(() => {
     baseDeDatosActas();
-    console.log('test');
   }, [state.baseDatosActas?.status, state.baseDatosActas?.length]);
 
   /////////////////// funciones para trabajar en el reducer ////////
-
   const handleMostrar = (payload) => {
     setMostrar(payload);
   };
@@ -51,7 +47,6 @@ export const AppProvider = (props) => {
   };
 
   const updatingLocaluserBd = (id) => {
-    console.log(typeof id);
     dispatch({ type: 'DELETE-LOCAL-USER', payload: id });
   };
 
@@ -73,11 +68,25 @@ export const AppProvider = (props) => {
     return 'recargado';
   };
 
-   const dynamicurlLocal = 'http://192.168.100.248:4000/';
-  //const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
-  //https://actas-server.herokuapp.com
 
-  //
+  //////////// eventos dispath
+
+  const setEventosBd = (payload)=>{
+    dispatch({type:'GUARDAR-EVENTO',payload})
+  }
+
+  const setOneEventBd = (oneEventBd) => {
+    dispatch({ type: 'ADD-ONE-EVENT', payload: oneEventBd });
+  };
+
+  const eliminarLocalEvent = (id) => {
+    dispatch({ type: 'DELETE-LOCAL-EVENT', payload: id });
+  };
+
+  //const dynamicurlLocal = 'http://192.168.100.248:4000/';
+  const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
+
+  //obtiene las base de datos actas entrega, devolucion
   const baseDeDatosActas = async () => {
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
@@ -95,7 +104,6 @@ export const AppProvider = (props) => {
       const endPoint = `${dynamicurlLocal}api/actas/obtener-bds`;
       const { data } = await axios.get(endPoint, config);
 
-      console.log(data, 'base de datos');
       setBaseDatosActas(data);
     } catch (error) {
       console.log(error.response.data.msg);
@@ -401,6 +409,92 @@ export const AppProvider = (props) => {
     }
   };
 
+
+  //eventos funciones
+
+  //funcion para crear un nuevo evento
+  const agregarEventofn = async (inputUsuario) => {
+
+
+    console.log(inputUsuario);
+
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+    };
+    try {
+      const endPoint = `${dynamicurlLocal}api/actas/agregar-evento`;
+      const { data } = await axios.post(endPoint, inputUsuario, config);
+
+      setOneEventBd(data)
+
+      console.log(data, 'evento agregado');
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+
+  }
+
+
+  //funcion para obtener los eventos
+
+  const obtenerEventosfn = async () => {
+
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+    };
+    try {
+      const endPoint = `${dynamicurlLocal}api/actas/obtener-eventos`;
+      const { data } = await axios.get(endPoint, config);
+
+      setEventosBd(data)
+
+      console.log(data, 'los eventos');
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+
+  }
+
+
+  //funcion para eliminar un evento
+  const eliminarEventofn = async (id) => {
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+    };
+    try {
+      const endPoint = `${dynamicurlLocal}api/actas/eliminar-evento/${id}`;
+      const { data } = await axios.delete(endPoint, config);
+      eliminarLocalEvent(id)
+      console.log(data, 'los eventos');
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+
+  }
+
+
+
   return (
     <AppContext.Provider
       value={{
@@ -426,7 +520,14 @@ export const AppProvider = (props) => {
         filtrarbaseDeDatosActas,
         eliminarFolderfn,
         setIsActiveLoading,
-        descargarFilefn
+        descargarFilefn,
+
+        //funciones de eventos
+        agregarEventofn,
+        obtenerEventosfn,
+        setOneEventBd,
+        eliminarEventofn,
+        eventosBd:state.eventosBd
       }}
     >
       {props.children}
