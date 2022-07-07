@@ -18,7 +18,7 @@ export const UserProvider = props => {
     const navigate = useNavigate()
 
     console.log('arriba de este')
-    console.log(`${import.meta.env.VITE.URL} probando variable de ambiente`)
+    console.log(`${import.meta.env.VITE_URL} probando variable de ambiente`)
 
     const loginUserfn = async (userData, setError) => {
 
