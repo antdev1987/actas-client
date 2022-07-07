@@ -3,7 +3,7 @@ import axios from 'axios'
 import { createContext, useContext, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { useAppProvider } from '../actasContext/AppProvider'
+
 
 const UserContext = createContext()
 
@@ -23,11 +23,15 @@ export const UserProvider = props => {
 
         // https://actas-server.herokuapp.com/api/user/login
 
+        console.log(`${import.meta.env.VITE.URL} probando variable de ambiente`)
+
         try {
             setIsUserActiveLoading(true)
 
             //const endPoint = `http://192.168.100.248:4000/api/user/login`
-            const endPoint = `https://actas-server.herokuapp.com/api/user/login`
+            //const endPoint = `https://actas-server.herokuapp.com/api/user/login`
+
+            const endPoint = `${import.meta.env.VITE.URL}/user/login`
 
             const { data } = await axios.post(endPoint, userData)
             // Swal.fire({
