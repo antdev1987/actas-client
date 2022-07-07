@@ -17,13 +17,13 @@ export const UserProvider = props => {
 
     const navigate = useNavigate()
 
-
+    console.log('arriba de este')
+    console.log(`${import.meta.env.VITE.URL} probando variable de ambiente`)
 
     const loginUserfn = async (userData, setError) => {
 
         // https://actas-server.herokuapp.com/api/user/login
 
-        console.log(`${import.meta.env.VITE.URL} probando variable de ambiente`)
 
         try {
             setIsUserActiveLoading(true)
