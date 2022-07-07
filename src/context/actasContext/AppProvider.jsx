@@ -84,7 +84,7 @@ export const AppProvider = (props) => {
   };
 
   //const dynamicurlLocal = 'http://192.168.100.248:4000/';
-  const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
+  //const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
 
   //obtiene las base de datos actas entrega, devolucion
   const baseDeDatosActas = async () => {
@@ -101,7 +101,7 @@ export const AppProvider = (props) => {
 
     try {
       if (state.baseDatosActas.entrega) return;
-      const endPoint = `${dynamicurlLocal}api/actas/obtener-bds`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/obtener-bds`;
       const { data } = await axios.get(endPoint, config);
 
       setBaseDatosActas(data);
@@ -150,7 +150,7 @@ export const AppProvider = (props) => {
     };
 
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/obtener-bds`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/obtener-bds`;
 
       const { data } = await axios.get(endPoint, config);
 
@@ -188,7 +188,7 @@ export const AppProvider = (props) => {
     };
     try {
       setIsActiveLoading(true);
-      const endPoint = `${dynamicurlLocal}api/user/crear-usuario`;
+      const endPoint = `${import.meta.env.VITE_URL}/user/crear-usuario`;
       const { data } = await axios.post(endPoint, userData, config);
 
       console.log(data);
@@ -215,7 +215,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/user/eliminar-usuario/${id}`;
+      const endPoint = `${import.meta.env.VITE_URL}/user/eliminar-usuario/${id}`;
       const { data } = await axios.delete(endPoint, config);
       updatingLocaluserBd(id);
       console.log(data);
@@ -241,7 +241,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/crear-folder`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/crear-folder`;
       const { data } = await axios.post(endPoint, inputUsuario, config);
       recargarBaseDeDatos();
       setUserFolder(data);
@@ -264,7 +264,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/guardar-archivos/${id}`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/guardar-archivos/${id}`;
       setIsActiveLoading(true);
       const { data } = await axios.post(endPoint, setData, config);
       setIsActiveLoading(false);
@@ -292,7 +292,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/buscar-folder`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/buscar-folder`;
       const { data } = await axios.post(endPoint, inputUsuario, config);
       recargarBaseDeDatos();
       setUserFolder(data);
@@ -333,7 +333,7 @@ export const AppProvider = (props) => {
       });
       console.log(testFiltrado2);
       eliminarResultados(testFiltrado2);
-      const endPoint = `${dynamicurlLocal}api/actas/eliminar-un-archivo`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/eliminar-un-archivo`;
       const { msg } = await axios.delete(endPoint, config);
       recargarBaseDeDatos();
       console.log(msg, 'funtion buscarfolderfn');
@@ -363,7 +363,7 @@ export const AppProvider = (props) => {
     console.log(config)
     try {
 
-      const endPoint = `${dynamicurlLocal}api/actas/descargar-un-archivo`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/descargar-un-archivo`;
       const { data } = await axios.get(endPoint, config);
       // recargarBaseDeDatos();
       console.log(data, 'funtion descargar file');
@@ -392,7 +392,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/eliminar-folder`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/eliminar-folder`;
 
       const { data } = await axios.delete(endPoint, config);
 
@@ -429,7 +429,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/agregar-evento`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/agregar-evento`;
       const { data } = await axios.post(endPoint, inputUsuario, config);
 
       setOneEventBd(data)
@@ -457,7 +457,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/obtener-eventos`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/obtener-eventos`;
       const { data } = await axios.get(endPoint, config);
 
       setEventosBd(data)
@@ -483,7 +483,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${dynamicurlLocal}api/actas/eliminar-evento/${id}`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/eliminar-evento/${id}`;
       const { data } = await axios.delete(endPoint, config);
       eliminarLocalEvent(id)
       console.log(data, 'los eventos');

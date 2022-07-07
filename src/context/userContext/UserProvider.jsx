@@ -70,7 +70,7 @@ export const UserProvider = props => {
           },
         };
         try {
-           const endPoint = `https://actas-server.herokuapp.com/api/user/movimientos-usuarios`
+           const endPoint = `${import.meta.env.VITE_URL}/user/movimientos-usuarios`
           //const endPoint = `http://192.168.100.248:4000/api/user/movimientos-usuarios`;
           const { data } = await axios.get(endPoint, config);
           
