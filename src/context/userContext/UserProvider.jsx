@@ -17,38 +17,23 @@ export const UserProvider = props => {
 
     const navigate = useNavigate()
 
-    console.log('arriba de este')
-    console.log(`${import.meta.env.VITE_URL} probando variable de ambiente`)
 
     const loginUserfn = async (userData, setError) => {
-
-        // https://actas-server.herokuapp.com/api/user/login
-
 
         try {
             setIsUserActiveLoading(true)
 
-            //const endPoint = `http://192.168.100.248:4000/api/user/login`
-            //const endPoint = `https://actas-server.herokuapp.com/api/user/login`
 
             const endPoint = `${import.meta.env.VITE_URL}/user/login`
 
             const { data } = await axios.post(endPoint, userData)
-            // Swal.fire({
-            //     icon: 'success',
-            //     title: 'Espera...',
-            //     text: 'Usuario autenticado',
-            //   })
+
 
             localStorage.setItem('uid', JSON.stringify(data));
             setIsUserActiveLoading(false)
             setUser(data)
         } catch (error) {
-            // Swal.fire({
-            //     icon: 'error',
-            //     title: 'Oops...',
-            //     text: error.response.data.msg,
-            //   })
+ 
             console.log(error.response.data.msg)
             setError(error.response.data.msg)
             setIsUserActiveLoading(false)
@@ -57,7 +42,6 @@ export const UserProvider = props => {
 
 
     const movientosUsuariosfn = async()=>{
-        console.log('en user provider funcion movientos usuarios')
 
         const token = JSON.parse(localStorage.getItem('uid'));
         if (!token) {
@@ -71,7 +55,6 @@ export const UserProvider = props => {
         };
         try {
            const endPoint = `${import.meta.env.VITE_URL}/user/movimientos-usuarios`
-          //const endPoint = `http://192.168.100.248:4000/api/user/movimientos-usuarios`;
           const { data } = await axios.get(endPoint, config);
           
           setMovimientosUsuarios(data)
