@@ -110,6 +110,7 @@ export const MostrarResultados = () => {
     }, 0);
   };
 
+  //funcion para poder registrar cuando un usuario descargar un archivo
   const handleDescargar=(originalName, tipo, nombre)=>{
     // console.log(tipo);
     // console.log('en descargar',originalName)

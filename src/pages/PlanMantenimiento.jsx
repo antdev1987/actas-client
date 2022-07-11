@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/Button'
 import ModalCalendar from '../components/calendar/ModalCalendar'
 import CustonCalendarEvent from '../components/calendar/CustonCalendarEvent'
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
+import SideBar from '../components/calendar/SideBar'
 
 
 //configuracion del big calendar y el date-fns para pasar idioma a espanol
@@ -44,14 +45,14 @@ const PlanMantenimiento = () => {
   useEffect(() => {
     console.log('plan mantenimiento en use effect')
     obtenerEventosfn()
-  }, [eventosBd.length])
+  }, [eventosBd?.length])
 
 
   /*
   aqui transformo los eventos obtenidos de la base de datos,, ya que siempre que se obtienen los campos 
   fechas se ponen como string y el programa big calendar trabaja con las propiedates tipo  {objeto fecha}
   */
-  const transformer = eventosBd.map((item) => {
+  const transformer = eventosBd?.map((item) => {
     return {
       ...item,
       ['start']: new Date(item.start),
@@ -128,7 +129,7 @@ const PlanMantenimiento = () => {
         </div>
 
         <div className='col-4 p-4 border border-4'>
-          side bar
+          <SideBar/>
         </div>
 
 

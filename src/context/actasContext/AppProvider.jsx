@@ -19,6 +19,7 @@ const AppContext = createContext({
   guardarResultados: (payload) => { },
 });
 
+/////////////aqui comienzan las funciones para el context//
 export const AppProvider = (props) => {
   const { addToast } = useToasts();
   const [state, dispatch] = useReducer(AppReducer, InitialState);
@@ -83,6 +84,13 @@ export const AppProvider = (props) => {
     dispatch({ type: 'DELETE-LOCAL-EVENT', payload: id });
   };
 
+  const setObtenerAdminFiles =(adminFilesBd)=>{
+    dispatch({type:'OBTENER-ADMIN-BD', payload:adminFilesBd})
+  }
+
+  const eliminarAdminFileLocaL =(payload)=>{
+    dispatch({ type: 'ELIMINAR-ADMIN-FILE-LOCAL', payload });
+  }
   //const dynamicurlLocal = 'http://192.168.100.248:4000/';
   //const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
 
@@ -343,7 +351,7 @@ export const AppProvider = (props) => {
   };
 
 
-
+//esta llamado solo sirve para llevar el control de cuando un usuario descargar un archivo
   const descargarFilefn = async (info) => {
     console.log(info);
 
@@ -410,7 +418,7 @@ export const AppProvider = (props) => {
   };
 
 
-  //eventos funciones
+  ///////////////eventos funciones pagina plan mantenimiento
 
   //funcion para crear un nuevo evento
   const agregarEventofn = async (inputUsuario) => {
@@ -462,7 +470,7 @@ export const AppProvider = (props) => {
 
       setEventosBd(data)
 
-      console.log(data, 'los eventos');
+      // console.log(data, 'los eventos');
     } catch (error) {
       console.log(error.response.data.msg);
     }
@@ -494,6 +502,63 @@ export const AppProvider = (props) => {
   }
 
 
+  //sidebar obtener los admin files
+
+  const obtenerAdminFilesfn = async()=>{
+
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+    };
+
+    try {
+      const endPoint = `${import.meta.env.VITE_URL}/actas/obtener-archivos-admin`;
+      const { data } = await axios.get(endPoint, config);
+      
+      setObtenerAdminFiles(data)
+    } catch (error) {
+      console.log(error.response.data.msg)
+    }
+
+  }
+
+  //este es para eliminar un archivo subido en el folder admin
+  const eliminarAdminFilefn = async(info)=>{
+
+    console.log(info);
+
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+      params: {
+        id: info._id,
+        public_id: info.public_id,
+      },
+    };
+    try {
+      const endPoint = `${import.meta.env.VITE_URL}/actas/eliminar-archivo-admin`;
+      const { data } = await axios.delete(endPoint, config);
+      // recargarBaseDeDatos();
+      eliminarAdminFileLocaL(info);
+      console.log(data, 'funcion eliminar archivo admin');
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+
+  }
+
 
   return (
     <AppContext.Provider
@@ -522,12 +587,16 @@ export const AppProvider = (props) => {
         setIsActiveLoading,
         descargarFilefn,
 
-        //funciones de eventos
+        //funciones de eventos pagina plan mantenimiento
+        eventosBd:state.eventosBd,
+        adminFilesBd:state.adminFilesBd,
         agregarEventofn,
         obtenerEventosfn,
         setOneEventBd,
         eliminarEventofn,
-        eventosBd:state.eventosBd
+        obtenerAdminFilesfn,
+        eliminarAdminFilefn
+
       }}
     >
       {props.children}

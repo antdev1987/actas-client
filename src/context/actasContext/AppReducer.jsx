@@ -2,7 +2,8 @@ export const InitialState ={
     userBd:[],
     baseDatosActas: {},
     resultados: [],
-    eventosBd:[]
+    eventosBd:[],
+    adminFilesBd:[]
 }
 
 export const AppReducer = (state,action)=>{
@@ -70,6 +71,21 @@ export const AppReducer = (state,action)=>{
             return {
                 ...state,
                 eventosBd:state.eventosBd.filter(item=> item._id.toString() !== action.payload)
+            }
+        }
+
+        case 'OBTENER-ADMIN-BD':{
+            return{
+                ...state,
+                adminFilesBd:[...action.payload]
+            }
+        }
+
+        case "ELIMINAR-ADMIN-FILE-LOCAL" : {
+            console.log(state.payload)
+            return {
+                ...state, 
+                adminFilesBd: state.adminFilesBd.filter(item=> item._id !== action.payload._id)
             }
         }
 
