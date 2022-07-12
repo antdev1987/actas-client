@@ -25,6 +25,8 @@ import { useAuth } from '../../context/userContext/UserProvider';
 
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 
+import cliTruncate from "cli-truncate";
+
 export const MostrarResultados = () => {
   const [refresh, setRefresh] = useState('');
 
@@ -200,7 +202,7 @@ export const MostrarResultados = () => {
               >
                 <AiOutlineFile style={{ fontSize: '50px' }} />
                 <div>
-                  <p>{item?.originalname}</p>
+                  <p>{cliTruncate(item?.originalname, 40)}</p>
                 </div>
                 <DropdownButton
                   id="bg-nested-dropdown"

@@ -18,13 +18,13 @@ import { useEffect } from 'react';
 const ModalCalendar = (props) => {
 
   const [inputs, setInputs] = useState({
-    title: '',
+    title: props.eventToEdit.title ?? '',
     notes: '',
     start: new Date(),
     end: addHours(new Date(), 2)
   })
 
-  const { agregarEventofn } = useAppProvider()
+  const { agregarOEditarEventofn } = useAppProvider()
   const { user } = useAuth()
 
   //esto funciona por si se selecciona fechas en el calendario
@@ -41,10 +41,32 @@ const ModalCalendar = (props) => {
   }, [props.selectedDates.start])
 
 
+//este useeffect controla si se edita un evento o no
+  useEffect(() => {
+
+    console.log('useeffect de editar')
+    setInputs({
+      title: props.eventToEdit.title,
+      notes: props.eventToEdit.notes,
+      start: props.eventToEdit.start,
+      end: props.eventToEdit.end,
+      _id: props.eventToEdit._id
+    })
+
+  }, [props.eventToEdit._id])
+
+
+
   //este useEffect es para resetear el formulario cuando se oculta el modal
   useEffect(() => {
     if (!props.show) {
       setInputs({
+        title: '',
+        notes: '',
+        start: new Date(),
+        end: addHours(new Date(), 2)
+      })
+      props.setEventToEdit({
         title: '',
         notes: '',
         start: new Date(),
@@ -75,6 +97,7 @@ const ModalCalendar = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    //codigo de validacion
     const validTime = differenceInSeconds(inputs.end, inputs.start)
     if (isNaN(validTime) || validTime <= 0) {
       console.log('error en la fecha')
@@ -86,9 +109,10 @@ const ModalCalendar = (props) => {
     }
 
 
-    //aqui se agregar el correo que crea el evento y luego se manda al provider para la llamada al backend y almacernalo en la base de datos
-    inputs.user = user.email
-    agregarEventofn(inputs)
+    //aqui se agregar el correo que crea el evento y luego se manda al provider para la llamada al backend y almacenarlo en la base de datos
+    inputs.user = props.eventToEdit._id ? props.eventToEdit.user :  user.email
+    agregarOEditarEventofn(inputs)
+
 
     //aqui se limpia el formulario despues de almacenar los datos
     setInputs({
@@ -98,6 +122,7 @@ const ModalCalendar = (props) => {
       end: addHours(new Date(), 2)
     })
 
+    //despues de que todo sale bien este oculta el modal
     props.onHide()
 
   }

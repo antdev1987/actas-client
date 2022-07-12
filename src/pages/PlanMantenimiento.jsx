@@ -37,9 +37,12 @@ const PlanMantenimiento = () => {
   const [modalShow, setModalShow] = useState(false)
   const { obtenerEventosfn, eventosBd, eliminarEventofn } = useAppProvider()
 
+  // Activar o Desactivar Sidebar
+  const [sideActive, setSideActive] = useState(false)
+
   //esto se envia como props a modalcalendar cuando se selecciona fechas en el calendario
   const [selectedDates, setSelectedDates] = useState({})
-
+  const [eventToEdit,setEventToEdit] = useState({})
 
   //funcion encargada de cargar la base de datos eventos siempre que se ingrese a la pagina (plan mantenimiento)
   useEffect(() => {
@@ -72,7 +75,29 @@ const PlanMantenimiento = () => {
 
   //eliminar un evento al hacer doble click sobre uno
   const onDoubleClickDelete = (event) => {
+    console.log(event)
     Swal.fire({
+      title: 'Eliga que desea hacer',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Editar',
+      denyButtonText: `Eliminar`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        // Swal.fire('Saved!', '', 'success')
+        setModalShow(true)
+        setEventToEdit(event)
+      } else if (result.isDenied) {
+        eliminarevento(event)
+        // Swal.fire('Changes are not saved', '', 'info')
+      }
+    })
+    
+  }
+  const eliminarevento = (event)=>{
+    
+      Swal.fire({
       title: 'Estas Seguro?',
       text: "No seras capaz de revertir esto!",
       icon: 'warning',
@@ -96,13 +121,16 @@ const PlanMantenimiento = () => {
   }
 
 
+
+
+
   return (
 
     <div className='container-fluid'>
 
-      <div className='row  border'>
+      <div className='row border'>
 
-        <div className='col-8 p-4'>
+        <div className='col-8 p-4' style={{flex: "1"}}>
           <Calendar
             className='border border-4'
             culture='es'
@@ -128,7 +156,8 @@ const PlanMantenimiento = () => {
           />
         </div>
 
-        <div className='col-4 p-4 border border-4'>
+        <div className={` p-4 border border-4 side ${sideActive ? "col-4" : "closeSide"}`}>
+          <button className={`arrow ${sideActive ? "" : "close"}`} onClick={() => { setSideActive(!sideActive)}}> <i className="bi bi-arrow-left-circle-fill fs-1"></i> </button>
           <SideBar/>
         </div>
 
@@ -144,6 +173,8 @@ const PlanMantenimiento = () => {
         selectedDates={selectedDates}
         show={modalShow}
         onHide={() => setModalShow(false)}
+        eventToEdit={eventToEdit}
+        setEventToEdit={setEventToEdit}
       />
 
     </div>

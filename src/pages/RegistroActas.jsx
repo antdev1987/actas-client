@@ -7,7 +7,7 @@ const RegistroActas = () => {
   const {
     buscarFolderUsuariofn,
     crearFolderUsuariofn,
-    guardarFolderUsuariofn,
+    guardarArchivosRegistrofn,
   } = useAppProvider();
 
   const inputRef = useRef();
@@ -82,6 +82,7 @@ const RegistroActas = () => {
   // Files
   const handleFiles = (e) => {
     setSaveFile(e.target.files);
+    console.log(e.target.files)
 
     if (e.target.files.length === 0) {
       setMostrar({ ...mostrar, guardar: false });
@@ -100,6 +101,7 @@ const RegistroActas = () => {
     const data = new FormData();
 
     for (var x = 0; x < saveFile.length; x++) {
+      console.log(saveFile[x]);
       data.append(`myFiles`, saveFile[x]);
     }
 
@@ -108,7 +110,7 @@ const RegistroActas = () => {
     inputRef.current.value = null;
     setSaveFile([]);
     setMostrar({ ...mostrar, guardar: false });
-    guardarFolderUsuariofn(data, userFolder._id);
+    guardarArchivosRegistrofn(data, userFolder._id);
   };
 
   return (

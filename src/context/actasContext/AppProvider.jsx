@@ -14,7 +14,7 @@ import { useToasts } from 'react-toast-notifications';
 
 const AppContext = createContext({
   crearFolderUsuariofn: () => { },
-  guardarFolderUsuariofn: () => { },
+  guardarArchivosRegistrofn: () => { },
   baseDatosActas: [],
   guardarResultados: (payload) => { },
 });
@@ -72,8 +72,8 @@ export const AppProvider = (props) => {
 
   //////////// eventos dispath
 
-  const setEventosBd = (payload)=>{
-    dispatch({type:'GUARDAR-EVENTO',payload})
+  const setEventosBd = (payload) => {
+    dispatch({ type: 'GUARDAR-EVENTO', payload })
   }
 
   const setOneEventBd = (oneEventBd) => {
@@ -84,11 +84,11 @@ export const AppProvider = (props) => {
     dispatch({ type: 'DELETE-LOCAL-EVENT', payload: id });
   };
 
-  const setObtenerAdminFiles =(adminFilesBd)=>{
-    dispatch({type:'OBTENER-ADMIN-BD', payload:adminFilesBd})
+  const setObtenerAdminFiles = (adminFilesBd) => {
+    dispatch({ type: 'OBTENER-ADMIN-BD', payload: adminFilesBd })
   }
 
-  const eliminarAdminFileLocaL =(payload)=>{
+  const eliminarAdminFileLocaL = (payload) => {
     dispatch({ type: 'ELIMINAR-ADMIN-FILE-LOCAL', payload });
   }
   //const dynamicurlLocal = 'http://192.168.100.248:4000/';
@@ -260,7 +260,7 @@ export const AppProvider = (props) => {
   };
 
   //este codigo sirve para almacenar los archivos docx xlsx pdf en un usuario especifico
-  const guardarFolderUsuariofn = async (setData, id) => {
+  const guardarArchivosRegistrofn = async (setData, id) => {
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
       setUser('');
@@ -351,7 +351,7 @@ export const AppProvider = (props) => {
   };
 
 
-//esta llamado solo sirve para llevar el control de cuando un usuario descargar un archivo
+  //esta llamado solo sirve para llevar el control de cuando un usuario descargar un archivo
   const descargarFilefn = async (info) => {
     console.log(info);
 
@@ -421,7 +421,7 @@ export const AppProvider = (props) => {
   ///////////////eventos funciones pagina plan mantenimiento
 
   //funcion para crear un nuevo evento
-  const agregarEventofn = async (inputUsuario) => {
+  const agregarOEditarEventofn = async (inputUsuario) => {
 
 
     console.log(inputUsuario);
@@ -437,7 +437,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${import.meta.env.VITE_URL}/actas/agregar-evento`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/agregar-o-editar-evento`;
       const { data } = await axios.post(endPoint, inputUsuario, config);
 
       setOneEventBd(data)
@@ -448,7 +448,6 @@ export const AppProvider = (props) => {
     }
 
   }
-
 
   //funcion para obtener los eventos
 
@@ -504,7 +503,7 @@ export const AppProvider = (props) => {
 
   //sidebar obtener los admin files
 
-  const obtenerAdminFilesfn = async()=>{
+  const obtenerAdminFilesfn = async () => {
 
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
@@ -520,7 +519,7 @@ export const AppProvider = (props) => {
     try {
       const endPoint = `${import.meta.env.VITE_URL}/actas/obtener-archivos-admin`;
       const { data } = await axios.get(endPoint, config);
-      
+
       setObtenerAdminFiles(data)
     } catch (error) {
       console.log(error.response.data.msg)
@@ -529,7 +528,7 @@ export const AppProvider = (props) => {
   }
 
   //este es para eliminar un archivo subido en el folder admin
-  const eliminarAdminFilefn = async(info)=>{
+  const eliminarAdminFilefn = async (info) => {
 
     console.log(info);
 
@@ -559,6 +558,32 @@ export const AppProvider = (props) => {
 
   }
 
+    // Para subir files en el sidebar 
+    const subirFilesAdminfn = async (files) => {
+      console.log(files)
+      const token = JSON.parse(localStorage.getItem('uid'));
+      if (!token) {
+        setUser('');
+        return;
+      }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+        },
+      };
+      try {
+        const endPoint = `${import.meta.env.VITE_URL}/actas/guardar-archivos-admin`;
+        setIsActiveLoading(true);
+        const { data } = await axios.post(endPoint, files, config);
+        
+        addToast('Guardado', { appearance: 'success', autoDismiss: true });
+        obtenerAdminFilesfn()
+        setIsActiveLoading(false);
+      } catch (error) {
+        addToast(error.response.data.msg, { appearance: 'warning', autoDismiss: true });
+        setIsActiveLoading(false);
+      }
+    }
 
   return (
     <AppContext.Provider
@@ -575,7 +600,7 @@ export const AppProvider = (props) => {
         deleteNewUserAppfn,
         buscarFolderUsuariofn,
         crearFolderUsuariofn,
-        guardarFolderUsuariofn,
+        guardarArchivosRegistrofn,
         guardarResultados,
         handleMostrar,
         visualizar,
@@ -588,14 +613,15 @@ export const AppProvider = (props) => {
         descargarFilefn,
 
         //funciones de eventos pagina plan mantenimiento
-        eventosBd:state.eventosBd,
-        adminFilesBd:state.adminFilesBd,
-        agregarEventofn,
+        eventosBd: state.eventosBd,
+        adminFilesBd: state.adminFilesBd,
+        agregarOEditarEventofn,
         obtenerEventosfn,
         setOneEventBd,
         eliminarEventofn,
         obtenerAdminFilesfn,
-        eliminarAdminFilefn
+        eliminarAdminFilefn,
+        subirFilesAdminfn
 
       }}
     >

@@ -33,3 +33,39 @@ code {
   /* padding:5px; */
   position:fixed;
 }
+
+
+.side {
+  transition: width .5s linear;
+}
+
+.side.closeSide {
+  width: 10px !important;
+}
+
+.filesBox {
+  overflow-x: hidden;
+  height: calc(100vh - 200px);
+}
+
+.arrow {
+  transition: transform .5s;
+  display: inline-block;
+  margin-top: -15px;
+  margin-left: -25px;
+  background: none;
+  border: none;
+}
+
+.arrow.close {
+  transform: rotate(180deg);
+}
+
+.iconArchivo {
+  font-size: 50px;
+  min-width: 50px;
+}
+
+.word-break-all {
+  word-break: break-all;
+}
