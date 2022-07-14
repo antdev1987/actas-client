@@ -8,9 +8,7 @@ import {
   DropdownButton,
   Row,
 } from 'react-bootstrap';
-
 import { FiFolder } from 'react-icons/fi';
-
 import {
   AiOutlineFile,
   AiOutlineFolderOpen,
@@ -18,22 +16,17 @@ import {
 } from 'react-icons/ai';
 
 import { RiArrowGoBackLine } from 'react-icons/ri';
-
 import { useAppProvider } from '../../context/actasContext/AppProvider';
-
 import { useAuth } from '../../context/userContext/UserProvider';
-
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
-
 import cliTruncate from "cli-truncate";
+
+
 
 export const MostrarResultados = () => {
   const [refresh, setRefresh] = useState('');
-
   const [id, setId] = useState('');
-
   const { user } = useAuth();
-
   const {
     resultados,
     handleMostrar,
@@ -46,9 +39,8 @@ export const MostrarResultados = () => {
   } = useAppProvider();
 
   const [saveFiles, setSaveFiles] = useState();
-
-  console.log(mostrar);
-
+  
+//
   const cambiarPerspectiva = (idx, tof) => {
     handleMostrar(tof);
     setVisualizar('');

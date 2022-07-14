@@ -11,6 +11,7 @@ const initialInputs = {
   password: "",
 };
 
+//componente de la pagina admin user
 const AddUserForm = () => {
   const { createNewUserAppfn } = useAppProvider();
   const [inputs, setInputs] = useState(initialInputs);
@@ -27,6 +28,7 @@ const AddUserForm = () => {
     });
   };
 
+  //este muestra y oculta el formulario para agregar nuevo usuario en la admin user
   const handleShow = () => {
     setShowForm(!showForm);
   };

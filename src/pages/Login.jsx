@@ -10,14 +10,15 @@ const Login = () => {
   const [inputs, setInputs] = useState(initialValues);
   const [error, setError] = useState("");
   const { loginUserfn } = useAuth();
-  
 
+  //manda el email y passworde que es usuario ingresa en login al backend
   const handleSubmit = (e) => {
     e.preventDefault();
 
     loginUserfn(inputs, setError);
   };
 
+  //guarda lo que se escribe en los inputs en un state
   const handleInputs = (e) => {
     setInputs({
       ...inputs,

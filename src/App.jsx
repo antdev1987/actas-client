@@ -21,38 +21,40 @@ import AdminUsers from "./pages/AdminUsers";
 import Loading from "./layout/Loading";
 import Bitacora from "./pages/Bitacora";
 
+
+//aqui se controla todos las rutas de la pagina
 function App() {
   return (
     <BrowserRouter>
       <UserProvider>
-          <ToastProvider>
-        <AppProvider>
-          <Loading>
-            <NavBar />
-            <ToastProvider>
-              <Routes>
-                <Route element={<PublicRouteApp />}>
-                  <Route path="/" element={<Login />} />
-                </Route>
+        <ToastProvider>
+          <AppProvider>
+            <Loading>
+              <NavBar />
+              <ToastProvider>
+                <Routes>
+                  <Route element={<PublicRouteApp />}>
+                    <Route path="/" element={<Login />} />
+                  </Route>
 
-                <Route element={<PrivateRouteUser />}>
-                  <Route path="/registro-actas" element={<RegistroActas />} />
-                  <Route path="/control" element={<Control />} />
-                  <Route
-                    path="plan-mantenimiento"
-                    element={<PlanMantenimiento />}
-                  />
-                </Route>
+                  <Route element={<PrivateRouteUser />}>
+                    <Route path="/registro-actas" element={<RegistroActas />} />
+                    <Route path="/control" element={<Control />} />
+                    <Route
+                      path="plan-mantenimiento"
+                      element={<PlanMantenimiento />}
+                    />
+                  </Route>
 
-                <Route element={<PrivateRouteAdmin />}>
-                  <Route path="/admin/admin-users" element={<AdminUsers />} />
-                  <Route path='/admin/bitacora' element={<Bitacora />}/> 
-                </Route>
-              </Routes>
-            </ToastProvider>
-          </Loading>
-        </AppProvider>
-            </ToastProvider>
+                  <Route element={<PrivateRouteAdmin />}>
+                    <Route path="/admin/admin-users" element={<AdminUsers />} />
+                    <Route path='/admin/bitacora' element={<Bitacora />} />
+                  </Route>
+                </Routes>
+              </ToastProvider>
+            </Loading>
+          </AppProvider>
+        </ToastProvider>
       </UserProvider>
     </BrowserRouter>
   );

@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-
 import { Button, Form } from 'react-bootstrap';
-import { useToasts } from 'react-toast-notifications';
-
 import { useAppProvider } from '../../context/actasContext/AppProvider';
 
 export const Formulario = () => {
   // Obteninedo informacion de la base de datos
   const {
-    baseDatosActas,
     handleMostrar,
     setVisualizar,
     filtrarbaseDeDatosActas,
@@ -26,9 +22,7 @@ export const Formulario = () => {
 
   const filtrar = async (e) => {
     e.preventDefault();
-
     filtrarbaseDeDatosActas(getValues.selector, getValues.nombre);
-
     handleMostrar(true);
     setVisualizar(false);
   };
@@ -43,7 +37,7 @@ export const Formulario = () => {
           <Form.Select name="selector" onChange={savingValues}>
             <option value="entrega">Entrega</option>
             <option value="devolucion">Devolucion</option>
-            <option value="calendario">Calendario</option>
+            <option value="planMantenimiento">Plan de mantenimiento</option>
           </Form.Select>
         </Form.Group>
 

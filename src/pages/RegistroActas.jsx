@@ -4,15 +4,6 @@ import { useToasts } from 'react-toast-notifications';
 import { useAppProvider } from '../context/actasContext/AppProvider';
 
 const RegistroActas = () => {
-  const {
-    buscarFolderUsuariofn,
-    crearFolderUsuariofn,
-    guardarArchivosRegistrofn,
-  } = useAppProvider();
-
-  const inputRef = useRef();
-
-  const { addToast } = useToasts();
 
   const [mostrar, setMostrar] = useState({
     grupo1: false,
@@ -32,7 +23,19 @@ const RegistroActas = () => {
     selector: 'Entrega',
   });
 
-  // Validacion
+  const {
+    buscarFolderUsuariofn,
+    crearFolderUsuariofn,
+    guardarArchivosRegistrofn,
+  } = useAppProvider();
+
+  const inputRef = useRef(); // seleciona el input file para limpiarlo luego de usuarlo
+  const { addToast } = useToasts();
+
+  //
+
+
+  // esto se encargar de las notificaciones
   useEffect(() => {
     if (userFolder.msg) {
       addToast(userFolder.msg, { appearance: 'error', autoDismiss: true });
@@ -51,7 +54,7 @@ const RegistroActas = () => {
     }
   }, [userFolder]);
 
-  // Boton buscar
+  // este busca una carpeta en la pagina registro
   const handleBuscar = async (e) => {
     e.preventDefault();
 
@@ -65,7 +68,7 @@ const RegistroActas = () => {
     buscarFolderUsuariofn(setUserFolder, inputUsuario);
   };
 
-  //Boton Crear
+  //este se encargar de crear el folder 
   const handlecrear = (e) => {
     e.preventDefault();
 
@@ -79,7 +82,7 @@ const RegistroActas = () => {
     crearFolderUsuariofn(setUserFolder, inputUsuario);
   };
 
-  // Files
+  // este se encargar de almacenar los archivos en un state y asi aparece el boton de gardar
   const handleFiles = (e) => {
     setSaveFile(e.target.files);
     console.log(e.target.files)
@@ -92,7 +95,7 @@ const RegistroActas = () => {
     setMostrar({ ...mostrar, guardar: true });
   };
 
-  // Enviar la informacion
+  // envia los archivos al backend
   const handleGuardar = async (e) => {
     e.preventDefault();
 
@@ -112,6 +115,9 @@ const RegistroActas = () => {
     setMostrar({ ...mostrar, guardar: false });
     guardarArchivosRegistrofn(data, userFolder._id);
   };
+
+
+
 
   return (
     <div
@@ -140,7 +146,7 @@ const RegistroActas = () => {
           >
             <option value="Entrega">Entrega</option>
             <option value="Devolucion">Devolucion</option>
-            <option value="Calendario">Calendario</option>
+            <option value="PlanMantenimiento">Plan de mantenimiento</option>
           </Form.Select>
           <hr />
         </Form.Group>

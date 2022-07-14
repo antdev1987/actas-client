@@ -73,8 +73,8 @@ const PlanMantenimiento = () => {
   }
 
 
-  //eliminar un evento al hacer doble click sobre uno
-  const onDoubleClickDelete = (event) => {
+  //este administra las opciones cuando se da doble click en un evento muestra editar o eliminar
+  const onDoubleClickOpciones = (event) => {
     console.log(event)
     Swal.fire({
       title: 'Eliga que desea hacer',
@@ -83,14 +83,11 @@ const PlanMantenimiento = () => {
       confirmButtonText: 'Editar',
       denyButtonText: `Eliminar`,
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        // Swal.fire('Saved!', '', 'success')
         setModalShow(true)
         setEventToEdit(event)
       } else if (result.isDenied) {
         eliminarevento(event)
-        // Swal.fire('Changes are not saved', '', 'info')
       }
     })
     
@@ -152,7 +149,7 @@ const PlanMantenimiento = () => {
             components={{
               event: CustonCalendarEvent
             }}
-            onDoubleClickEvent={onDoubleClickDelete}
+            onDoubleClickEvent={onDoubleClickOpciones}
           />
         </div>
 

@@ -4,6 +4,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 import { useAppProvider } from "../../context/actasContext/AppProvider";
 
 
+//este componente se encarga de la logica de mostar los usuarios y eliminarlos de la pagina admin user
 const ListUsers = ({ userBd }) => {
   const {deleteNewUserAppfn} = useAppProvider()
 

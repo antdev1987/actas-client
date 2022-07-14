@@ -12,89 +12,87 @@ import { AppReducer, InitialState } from './AppReducer';
 import { useAuth } from '../userContext/UserProvider';
 import { useToasts } from 'react-toast-notifications';
 
-const AppContext = createContext({
-  crearFolderUsuariofn: () => { },
-  guardarArchivosRegistrofn: () => { },
-  baseDatosActas: [],
-  guardarResultados: (payload) => { },
-});
+const AppContext = createContext();
 
 /////////////aqui comienzan las funciones para el context//
 export const AppProvider = (props) => {
+
   const { addToast } = useToasts();
   const [state, dispatch] = useReducer(AppReducer, InitialState);
-
   const [mostrar, setMostrar] = useState('');
   const [visualizar, setVisualizar] = useState('');
   const [isActiveLoading, setIsActiveLoading] = useState(false);
-
   const { setUser } = useAuth();
 
+
+  //esto carga la base de datos actas una vez logeado
   useEffect(() => {
     baseDeDatosActas();
   }, [state.baseDatosActas?.status, state.baseDatosActas?.length]);
 
   /////////////////// funciones para trabajar en el reducer ////////
+
+  //administra para mostar los resultados en la busqueda de folder en la pagina control
   const handleMostrar = (payload) => {
     setMostrar(payload);
   };
 
+
+  //esto se encarga de manegar los state de usuarios de la pagina Admin users
   const setUserBd = (userBd) => {
     dispatch({ type: 'GUARDAR-USERBD', payload: userBd });
   };
-
   const setOneUserBd = (oneUserBd) => {
     dispatch({ type: 'UPDATE-ONE-USER', payload: oneUserBd });
   };
-
   const updatingLocaluserBd = (id) => {
     dispatch({ type: 'DELETE-LOCAL-USER', payload: id });
   };
 
+
+
+  //este se encargar de los state de control para poder hacer filtros en la busqueda en la pagina control
   const setBaseDatosActas = (payload) => {
     dispatch({ type: 'GUARDAR-BD', payload });
   };
-
   const guardarResultados = (payload) => {
     dispatch({ type: 'GUARDAR-RESULTADOS', payload });
   };
-
   const eliminarResultados = (payload) => {
     dispatch({ type: 'ELIMINAR-RESULTADOS', payload });
   };
-  /////// funciones generales ////////
 
+
+  /////// funciones generales ////////
   const recargarBaseDeDatos = () => {
     setBaseDatosActas({ status: 'recargar' });
     return 'recargado';
   };
 
 
-  //////////// eventos dispath
 
+  //este se encargar de administrar los state del calendario
   const setEventosBd = (payload) => {
     dispatch({ type: 'GUARDAR-EVENTO', payload })
   }
-
   const setOneEventBd = (oneEventBd) => {
     dispatch({ type: 'ADD-ONE-EVENT', payload: oneEventBd });
   };
-
   const eliminarLocalEvent = (id) => {
     dispatch({ type: 'DELETE-LOCAL-EVENT', payload: id });
   };
 
+
+
+  //este se encarga de los state del sidebar en plan mantenimiento
   const setObtenerAdminFiles = (adminFilesBd) => {
     dispatch({ type: 'OBTENER-ADMIN-BD', payload: adminFilesBd })
   }
-
   const eliminarAdminFileLocaL = (payload) => {
     dispatch({ type: 'ELIMINAR-ADMIN-FILE-LOCAL', payload });
   }
-  //const dynamicurlLocal = 'http://192.168.100.248:4000/';
-  //const dynamicurlLocal = 'https://actas-server.herokuapp.com/';
 
-  //obtiene las base de datos actas entrega, devolucion
+  //obtiene las base de datos actas entrega, devolucion y plan mantenimiento para luego poder filtrar en control
   const baseDeDatosActas = async () => {
     const token = JSON.parse(localStorage.getItem('uid'));
     if (!token) {
@@ -118,7 +116,8 @@ export const AppProvider = (props) => {
     }
   };
 
-  //funcion que obtiner ultimos datos de base de datos para poder filtrar busqueda en react
+
+  //funcion que obtine ultimos datos de base de datos para poder filtrar busqueda en react 
   const filtrarbaseDeDatosActas = async (selector, nombre) => {
     console.log(selector, nombre);
 
@@ -181,6 +180,7 @@ export const AppProvider = (props) => {
       console.log(error.response.data.msg);
     }
   };
+
 
   //esta funcion sirve para que el administrador pueda crear un nuevo usuario para acceder a la aplicacion
   const createNewUserAppfn = async (userData) => {
@@ -285,7 +285,7 @@ export const AppProvider = (props) => {
     }
   };
 
-  //con este codigo podra buscar si existe un usuario en la base de datos
+  //con este codigo podra buscar si existe un usuario en la base de datos en la pagina registro
   const buscarFolderUsuariofn = async (setUserFolder, inputUsuario) => {
     console.log(inputUsuario);
 
@@ -310,6 +310,7 @@ export const AppProvider = (props) => {
     }
   };
 
+  //este es para eliminar un archivo en la pagina control
   const eliminarFilefn = async (info) => {
     console.log(info);
 
@@ -381,7 +382,7 @@ export const AppProvider = (props) => {
   };
 
 
-
+  //este eliminar el folder en la pagina control
   const eliminarFolderfn = async (info) => {
     console.log(info);
 
@@ -558,32 +559,32 @@ export const AppProvider = (props) => {
 
   }
 
-    // Para subir files en el sidebar 
-    const subirFilesAdminfn = async (files) => {
-      console.log(files)
-      const token = JSON.parse(localStorage.getItem('uid'));
-      if (!token) {
-        setUser('');
-        return;
-      }
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token.token}`,
-        },
-      };
-      try {
-        const endPoint = `${import.meta.env.VITE_URL}/actas/guardar-archivos-admin`;
-        setIsActiveLoading(true);
-        const { data } = await axios.post(endPoint, files, config);
-        
-        addToast('Guardado', { appearance: 'success', autoDismiss: true });
-        obtenerAdminFilesfn()
-        setIsActiveLoading(false);
-      } catch (error) {
-        addToast(error.response.data.msg, { appearance: 'warning', autoDismiss: true });
-        setIsActiveLoading(false);
-      }
+  // Para subir files en el sidebar 
+  const subirFilesAdminfn = async (files) => {
+    console.log(files)
+    const token = JSON.parse(localStorage.getItem('uid'));
+    if (!token) {
+      setUser('');
+      return;
     }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
+    };
+    try {
+      const endPoint = `${import.meta.env.VITE_URL}/actas/guardar-archivos-admin`;
+      setIsActiveLoading(true);
+      const { data } = await axios.post(endPoint, files, config);
+
+      addToast('Guardado', { appearance: 'success', autoDismiss: true });
+      obtenerAdminFilesfn()
+      setIsActiveLoading(false);
+    } catch (error) {
+      addToast(error.response.data.msg, { appearance: 'warning', autoDismiss: true });
+      setIsActiveLoading(false);
+    }
+  }
 
   return (
     <AppContext.Provider

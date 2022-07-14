@@ -8,11 +8,10 @@ import ListUsers from "../components/adminUsers/ListUsers";
 import AddUserForm from "../components/adminUsers/AddUserForm";
 
 const AdminUsers = () => {
-  const { setUserBd, userBd, setIsActiveLoading } =
-    useAppProvider();
+  const { setUserBd, userBd, setIsActiveLoading } =useAppProvider();
   const { setUser } = useAuth();
 
-  //este codigo abajo cargara los usuario disponibles de la base de datos siempre que este en esta pagina
+  //este codigo abajo cargara los usuario disponibles de la base de datos siempre que este en esta pagina (Admin Users)
   useEffect(() => {
     console.log("getting user useEffect");
     setIsActiveLoading(true);
@@ -27,7 +26,7 @@ const AdminUsers = () => {
           Authorization: `Bearer ${token.token}`,
         },
       };
-      
+
       try {
         const endPoint = `https://actas-server.herokuapp.com/api/user/ver-usuario`;
         const { data } = await axios(endPoint, config);

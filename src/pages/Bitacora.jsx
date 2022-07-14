@@ -7,13 +7,13 @@ const Bitacora = () => {
 
   const { movientosUsuariosfn, movientosUsuarios } = useAuth()
 
+  //este obtiene de la base de datos todos los movimientos de los usuarios
   useEffect(() => {
-    console.log('probando')
     movientosUsuariosfn()
   }, [])
 
 
-  console.log(movientosUsuarios)
+  console.log('pagina bitacora')
 
 
   return (

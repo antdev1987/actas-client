@@ -5,9 +5,6 @@ import { useAuth } from '../../context/userContext/UserProvider';
 import cliTruncate from "cli-truncate";
 
 import {
-    Button,
-    Card,
-    Col,
     Dropdown,
     DropdownButton,
     Form,
@@ -16,8 +13,6 @@ import {
 
 import {
     AiOutlineFile,
-    AiOutlineFolderOpen,
-    AiOutlineReload,
 } from 'react-icons/ai';
 
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
@@ -28,42 +23,33 @@ const SideBar = () => {
     const { obtenerAdminFilesfn, adminFilesBd, descargarFilefn, eliminarAdminFilefn, subirFilesAdminfn } = useAppProvider()
     const { user } = useAuth()
 
+    //este es para gargar los archivos del sidebar la primera vez que se va a la pagina plan mantenimiento
     useEffect(() => {
-
         obtenerAdminFilesfn()
-
     }, [])
 
 
-
-    console.log(adminFilesBd)
-
     //funcion para poder registrar cuando un usuario descargar un archivo
     const handleDescargar = (originalName) => {
-        // console.log(tipo);
-        // console.log('en descargar',originalName)
         descargarFilefn({ originalName })
     }
 
+
+    //este es el input para subir los archivos en el sidebar y automaticamente enviarlo al backend
     const handleChangeFile = (e) => {
         const files = e.target.files
-
         if (files.length === 0) return
-        
         // console.log(e.target.files)
         const data = new FormData();
-
-
         for (var x = 0; x < files.length; x++) {
             // console.log(saveFile[x]);
             data.append(`myFiles`, files[x]);
         }
-
         subirFilesAdminfn(data)
     }
 
 
-    //este es para eliminar el archivo
+    //este es para eliminar un archivo del sidebar
     const handleEliminarFile = (item) => {
         console.log(item);
 

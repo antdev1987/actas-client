@@ -8,13 +8,15 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/userContext/UserProvider";
 
+import Logo from "./logo.webp"
+
 const NavBar = () => {
   const { user, logoutUserfn } = useAuth();
 
   return (
     <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">Aplicativo Actas</Navbar.Brand>
+        <Navbar.Brand href="#"> <img src={Logo} loading="lazy" width="50" height="40"/> </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 

@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 const ModalCalendar = (props) => {
 
   const [inputs, setInputs] = useState({
-    title: props.eventToEdit.title ?? '',
+    title:  '',
     notes: '',
     start: new Date(),
     end: addHours(new Date(), 2)
@@ -194,19 +194,6 @@ const ModalCalendar = (props) => {
             />
             <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
           </div>
-
-          {/* <div className="form-group mb-2">
-            <textarea
-              type="text"
-              className="form-control"
-              placeholder="Notas"
-              rows="5"
-              name="notes"
-              value={inputs.notes}
-              onChange={onFirstInputChange}
-            ></textarea>
-            <small id="emailHelp" className="form-text text-muted">Información adicional</small>
-          </div> */}
 
           <button
             type="submit"
