@@ -154,7 +154,7 @@ const PlanMantenimiento = () => {
         </div>
 
         <div className={` p-4 border border-4 side ${sideActive ? "col-4" : "closeSide"}`}>
-          <button className={`arrow ${sideActive ? "" : "close"}`} onClick={() => { setSideActive(!sideActive)}}> <i className="bi bi-arrow-left-circle-fill fs-1"></i> </button>
+          <button className={`arrow ${sideActive ? "" : "close"}`} onClick={() => { setSideActive(!sideActive)}}> <i className="bi bi-arrow-right-circle-fill fs-1"></i> </button>
           <SideBar/>
         </div>
 

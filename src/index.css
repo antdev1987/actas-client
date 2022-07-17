@@ -58,7 +58,7 @@ code {
 }
 
 .arrow.close {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
 }
 
 .iconArchivo {
