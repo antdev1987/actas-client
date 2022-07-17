@@ -16,7 +16,15 @@ const NavBar = () => {
   return (
     <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#"> <img src={Logo} loading="lazy" width="50" height="40"/> </Navbar.Brand>
+        <Navbar.Brand href="#"> 
+        <img 
+        src={Logo} 
+        loading="lazy" 
+        width="45" 
+        height="30"
+        className="d-inline-block align-top"
+        /> 
+        </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
