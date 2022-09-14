@@ -28,7 +28,7 @@ const AdminUsers = () => {
       };
 
       try {
-        const endPoint = `https://actas-server.herokuapp.com/api/user/ver-usuario`;
+        const endPoint = `${import.meta.env.VITE_URL}/user/ver-usuario`;
         const { data } = await axios(endPoint, config);
         console.log(data);
         setIsActiveLoading(false);
