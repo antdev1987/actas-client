@@ -177,7 +177,7 @@ export const AppProvider = (props) => {
 
       console.log(filtrado, 'base de datos');
     } catch (error) {
-      console.log(error.response.data.msg);
+      console.log(error);
     }
   };
 
