@@ -272,7 +272,7 @@ export const AppProvider = (props) => {
       },
     };
     try {
-      const endPoint = `${import.meta.env.VITE_URL}/actas/guardar-archivos/${id}`;
+      const endPoint = `${import.meta.env.VITE_URL}/actas/guardar-archivos/${id}/hola`;
       setIsActiveLoading(true);
       const { data } = await axios.post(endPoint, setData, config);
       setIsActiveLoading(false);

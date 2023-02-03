@@ -20,6 +20,7 @@ export const UserProvider = props => {
 
   const loginUserfn = async (userData, setError) => {
 
+    console.log('aqui')
     try {
       setIsUserActiveLoading(true)
       const endPoint = `${import.meta.env.VITE_URL}/user/login`
