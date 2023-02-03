@@ -19,24 +19,22 @@ code {
 }
 
 .scrollClass {
-  max-height:50vh;
+  max-height: 50vh;
   overflow-y: scroll;
 }
 
-
-.modalButton{
-  border-radius:100% !important;
-  bottom:25px;
+.modalButton {
+  border-radius: 100% !important;
+  bottom: 25px;
   /* right:500px; */
-  left:50px;
+  left: 50px;
   /* font-size: 30px; */
   /* padding:5px; */
-  position:fixed;
+  position: fixed;
 }
 
-
 .side {
-  transition: width .5s linear;
+  transition: width 0.5s linear;
 }
 
 .side.closeSide {
@@ -49,7 +47,7 @@ code {
 }
 
 .arrow {
-  transition: transform .5s;
+  transition: transform 0.5s;
   display: inline-block;
   margin-top: -15px;
   margin-left: -25px;
@@ -68,4 +66,13 @@ code {
 
 .word-break-all {
   word-break: break-all;
+}
+
+.gridCustom {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 140px);
+
+  max-width: 900px;
+
+  margin: 0 auto;
 }

@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Card, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { useToasts } from 'react-toast-notifications';
 import { useAppProvider } from '../context/actasContext/AppProvider';
+import { FiFolder } from 'react-icons/fi';
+import { useAuth } from '../context/userContext/UserProvider';
 
 const RegistroActas = () => {
+  const { user } = useAuth();
 
   const [mostrar, setMostrar] = useState({
     grupo1: false,
@@ -25,6 +28,8 @@ const RegistroActas = () => {
 
   const {
     buscarFolderUsuariofn,
+    resultados,
+    filtrarbaseDeDatosActas,
     crearFolderUsuariofn,
     guardarArchivosRegistrofn,
   } = useAppProvider();
@@ -33,7 +38,6 @@ const RegistroActas = () => {
   const { addToast } = useToasts();
 
   //
-
 
   // esto se encargar de las notificaciones
   useEffect(() => {
@@ -65,10 +69,24 @@ const RegistroActas = () => {
       return;
     }
 
-    buscarFolderUsuariofn(setUserFolder, inputUsuario);
+    // buscarFolderUsuariofn(setUserFolder, inputUsuario);
+    filtrarbaseDeDatosActas(inputUsuario.selector, inputUsuario.nombre);
   };
 
-  //este se encargar de crear el folder 
+  const archivoSelected = async (archivoInfo) => {
+    console.log(archivoInfo);
+
+    const info = {
+      nombre: archivoInfo.nombre,
+      selector: archivoInfo.tipo,
+    };
+
+    setInputUsuario(info);
+
+    buscarFolderUsuariofn(setUserFolder, info);
+  };
+
+  //este se encargar de crear el folder
   const handlecrear = (e) => {
     e.preventDefault();
 
@@ -85,7 +103,7 @@ const RegistroActas = () => {
   // este se encargar de almacenar los archivos en un state y asi aparece el boton de gardar
   const handleFiles = (e) => {
     setSaveFile(e.target.files);
-    console.log(e.target.files)
+    console.log(e.target.files);
 
     if (e.target.files.length === 0) {
       setMostrar({ ...mostrar, guardar: false });
@@ -116,97 +134,115 @@ const RegistroActas = () => {
     guardarArchivosRegistrofn(data, userFolder._id);
   };
 
-
-
-
   return (
-    <div
-      style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        height: 'calc(100vh - 60px)',
-        display: 'flex',
-        alignItems: 'center',
-        maxHeight: '9999999999px',
-      }}
-    >
-      <Form style={{ width: '100%' }} onSubmit={(e) => e.preventDefault()}>
-        <h2 className="text-center">Registros de Actas</h2>
+    <>
+      {' '}
+      <div
+        style={{
+          maxWidth: '900px',
+          margin: '50px auto',
+          display: 'flex',
+          alignItems: 'center',
+          maxHeight: '9999999999px',
+        }}
+      >
+        <Form style={{ width: '100%' }} onSubmit={(e) => e.preventDefault()}>
+          <h2 className="text-center">Registros de Actas</h2>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Tipo de acta</Form.Label>
-          <Form.Select
-            name="selector"
-            onChange={(e) =>
-              setInputUsuario({
-                ...inputUsuario,
-                [e.target.name]: e.target.value,
-              })
-            }
-          >
-            <option value="Entrega">Entrega</option>
-            <option value="Devolucion">Devolucion</option>
-            <option value="PlanMantenimiento">Plan de mantenimiento</option>
-          </Form.Select>
-          <hr />
-        </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Tipo de acta</Form.Label>
+            <Form.Select
+              name="selector"
+              onChange={(e) =>
+                setInputUsuario({
+                  ...inputUsuario,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            >
+              <option value="Entrega">Entrega</option>
+              <option value="Devolucion">Devolucion</option>
+              <option value="PlanMantenimiento">Plan de mantenimiento</option>
+            </Form.Select>
+            <hr />
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Nombre del usuario: </Form.Label>
-          <Form.Control
-            onChange={(e) =>
-              setInputUsuario({
-                ...inputUsuario,
-                [e.target.name]: e.target.value,
-              })
-            }
-            name="nombre"
-            type="text"
-            placeholder="Ingrese nombre"
-          />
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Nombre del usuario: </Form.Label>
+            <Form.Control
+              onChange={(e) =>
+                setInputUsuario({
+                  ...inputUsuario,
+                  [e.target.name]: e.target.value,
+                })
+              }
+              name="nombre"
+              type="text"
+              placeholder="Ingrese nombre"
+            />
 
-          <div className="d-flex gap-2 mt-3 mb-3">
-            <Button variant="outline-primary" onClick={handleBuscar}>
-              Buscar
-            </Button>
-            <Button variant="outline-primary" onClick={handlecrear}>
-              Crear
-            </Button>
-          </div>
-
-          {mostrar.usuario && (
-            <Form.Text className="text-success">
-              Se encuentra en el archivo: {mostrar.usuario}
-            </Form.Text>
-          )}
-
-          <hr />
-        </Form.Group>
-
-        {mostrar.grupo1 && (
-          <>
-            <Form.Group className="mb-3">
-              <Form.Label>Browser</Form.Label>
-              <Form.Control
-                ref={inputRef}
-                type="file"
-                multiple
-                onChange={handleFiles}
-                accept=".doc,.DOCX,.xlsx,.pdf"
-              />
-
-              <hr />
-            </Form.Group>
-
-            {mostrar.guardar && (
-              <Button variant="primary" type="submit" onClick={handleGuardar}>
-                Guardar
+            <div className="d-flex gap-2 mt-3 mb-3">
+              <Button variant="outline-primary" onClick={handleBuscar}>
+                Buscar
               </Button>
+              <Button variant="outline-primary" onClick={handlecrear}>
+                Crear
+              </Button>
+            </div>
+
+            {mostrar.usuario && (
+              <Form.Text className="text-success">
+                Se encuentra en el archivo: {mostrar.usuario}
+              </Form.Text>
             )}
-          </>
-        )}
-      </Form>
-    </div>
+
+            <hr />
+          </Form.Group>
+
+          {mostrar.grupo1 && (
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label>Browser</Form.Label>
+                <Form.Control
+                  ref={inputRef}
+                  type="file"
+                  multiple
+                  onChange={handleFiles}
+                  accept=".doc,.DOCX,.xlsx,.pdf"
+                />
+
+                <hr />
+              </Form.Group>
+
+              {mostrar.guardar && (
+                <Button variant="primary" type="submit" onClick={handleGuardar}>
+                  Guardar
+                </Button>
+              )}
+            </>
+          )}
+        </Form>
+      </div>
+      <div className="gridCustom">
+        {resultados?.map((item, idx) => (
+          <Card key={item?._id}>
+            <Card.Body>
+              <Card.Subtitle className="mb-2 text-muted d-flex align-items-center justify-content-between">
+                Files: {item?.files?.length}
+              </Card.Subtitle>
+              <FiFolder
+                style={{ fontSize: '140px' }}
+                className="w-100 pt-2 pb-2"
+                onClick={() => archivoSelected(item)}
+              />
+              <Card.Title style={{ textAlign: 'center' }}>
+                {item?.nombre}
+              </Card.Title>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
+    </>
   );
 };
 

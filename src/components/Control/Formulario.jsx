@@ -12,7 +12,7 @@ export const Formulario = () => {
 
   // obteniendo valores de los inputs
   const [getValues, setGetValues] = useState({
-    selector: 'entrega',
+    selector: 'Entrega',
     nombre: '',
   });
 
@@ -35,9 +35,9 @@ export const Formulario = () => {
         <Form.Group className="" controlId="formBasicPassword">
           <Form.Label>Tipo de acta</Form.Label>
           <Form.Select name="selector" onChange={savingValues}>
-            <option value="entrega">Entrega</option>
-            <option value="devolucion">Devolucion</option>
-            <option value="planMantenimiento">Plan de mantenimiento</option>
+            <option value="Entrega">Entrega</option>
+            <option value="Devolucion">Devolucion</option>
+            <option value="PlanMantenimiento">Plan de mantenimiento</option>
           </Form.Select>
         </Form.Group>
 
